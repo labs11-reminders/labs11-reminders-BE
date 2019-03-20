@@ -4,7 +4,9 @@
   "description": "This is the back end project for the Reminders group in Labs11.",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch --verbose"
+    "server": "nodemon",
+    "test": "jest --watch --verbose",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
