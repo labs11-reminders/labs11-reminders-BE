@@ -1,0 +1,39 @@
+{
+  "name": "labs11-reminders-BE",
+  "version": "1.0.0",
+  "description": "This is the back end project for the Reminders group in Labs11.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/labs11-reminders/labs11-reminders-BE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/labs11-reminders/labs11-reminders-BE/issues"
+  },
+  "homepage": "https://github.com/labs11-reminders/labs11-reminders-BE#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.5",
+    "cors": "^2.8.5",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "helmet": "^3.16.0",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.16.3",
+    "pg": "^7.9.0",
+    "react-test-renderer": "^16.8.4"
+  },
+  "devDependencies": {
+    "jest": "^24.5.0",
+    "jest-dom": "^3.1.3",
+    "nodemon": "^1.18.10",
+    "react-testing-library": "^6.0.1",
+    "sqlite3": "^4.0.6",
+    "supertest": "^4.0.2"
+  }
+}
