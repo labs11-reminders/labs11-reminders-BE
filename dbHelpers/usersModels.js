@@ -13,7 +13,7 @@ function getAll() {
 }
 
 //gets a user by their user id number
-function getByID() {
+function getById(id) {
     return db('users')
     .where('id', Number(id))
 };
