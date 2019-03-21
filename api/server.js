@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
-
+const usersRoutes = require('../routes/usersRoutes.js');
 
 const server = express();
 
@@ -16,6 +16,8 @@ server.get('/', (req, res) => {
     
 
 });
+
+
 
 module.exports = server;
 
