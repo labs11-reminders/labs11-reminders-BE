@@ -27,15 +27,26 @@ module.exports = {
     },
     seeds: {
       directory: './database/seeds',
+<<<<<<< HEAD
+    }
+=======
     },
+>>>>>>> ecacf966f4f59354cdb0f4aa114558a86048dc6e
   },
 
   production: {
     client: 'pg',
+<<<<<<< HEAD
+    connection: {
+      database: 'my_db',
+      user:     'username',
+      password: 'password'
+=======
     connection: prodDbConnection,
     migrations: {
       directory: './database/migrations',
       tableName: 'knex_migrations',
+>>>>>>> ecacf966f4f59354cdb0f4aa114558a86048dc6e
     },
     seeds: {
       directory: './database/seeds'
