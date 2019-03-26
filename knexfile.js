@@ -29,7 +29,7 @@ module.exports = {
       directory: './database/seeds',
 
     },
-
+    
   },
 
   production: {
