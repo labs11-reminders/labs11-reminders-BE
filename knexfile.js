@@ -43,10 +43,5 @@ module.exports = {
       directory: './database/seeds'
     },
   }
-<<<<<<< HEAD
   
   };
-=======
-
-  };
->>>>>>> 7ce1cd0ffb74ef17900b5e321adbf8c4e1f9c94f
