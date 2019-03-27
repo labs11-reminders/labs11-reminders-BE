@@ -1,4 +1,3 @@
-const knexConfig = require('../knexfile.js');
 
 const db = require('../database/dbConfig.js');
 

@@ -10,6 +10,19 @@ exports.up = function(knex, Promise) {
     users.string('email', 255).notNullable();
     users.string('phone', 12);
     users.string('country', 100).notNullable();
+
+    users
+      .integer('org_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('orgs');
+    users
+      .integer('role_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('roles');
   });
 };
 
