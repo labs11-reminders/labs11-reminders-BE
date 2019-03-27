@@ -12,30 +12,17 @@ exports.up = function(knex, Promise) {
     users.string('country', 100).notNullable();
 
     users
-      .integer('role_id')
-      .unsigned()
-      .notNullable()
-      .references('id')
-      .inTable('roles');
-
-    users
-      .integer('group_id')
-      .unsigned()
-      .references('id')
-      .inTable('groups');
-
-    users
-      .integer('template_id')
-      .unsigned()
-      .references('id')
-      .inTable('templates');
-
-    users
       .integer('org_id')
       .unsigned()
       .notNullable()
       .references('id')
       .inTable('orgs');
+    users
+      .integer('role_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('roles');
   });
 };
 
