@@ -12,15 +12,15 @@ const client = require('twilio')(   // Perhaps NEW?
 
 
 //AuthO
-var session = require('express-session');
-var dotenv = require('dotenv');
-var passport = require('passport');
-var Auth0Strategy = require('passport-auth0');
+const session = require('express-session');
+const dotenv = require('dotenv');
+const passport = require('passport');
+const Auth0Strategy = require('passport-auth0');
 
 dotenv.config();
 
    //configure Passport to use Auth0 
-var strategy = new Auth0Strategy(
+const strategy = new Auth0Strategy(
   {
       domain: process.env.AUTH0_DOMAIN,
       clientID: process.env.AUTH0_CLIENT_ID,
@@ -48,16 +48,17 @@ passport.deserializeUser(function (user, done) {
 // end Auth0
 
 const usersRoutes = require('../routes/usersRoutes.js');
+const authRoutes = require('../routes/authRoutes.js')
 
 const server = express();
-
+ 
 server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
 //Auth0
   //configuring the express-session
-var userSession = {
+const userSession = {
   secret: 'TWO LAWYERS A CAREER COACH AND A WRITER WALK INTO A BAR',
   cookies: {},
   resave: false,
