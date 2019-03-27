@@ -6,6 +6,76 @@ This is the back end project for the Reminders group in Labs11.
 
 ##
 
+## Endpoints
+
+**/--------------------------------------------/ GET ALL USERS /-----------------------------------------/**
+
+### **Get all Users**
+
+_method url_: `/api/users`
+
+_http method_: **[GET]**
+
+#### Response
+
+##### 200 (ok)
+
+###### Example response
+
+```
+[
+  {
+    "id": 1,
+    "name": 'Luz Gabits',
+    "password": 'jzqqDJx',
+    "email": 'lgabits25@gmpg.org',
+    "phone": '175-607-6017',
+    "country": 'Albania',
+    "org_id": 1,
+    "role_id": 2,
+  },
+  {
+    "id": 2,
+    "name": 'Lisetta Bolding'
+    "password": 'FwbT7SxLr',
+    "email": 'lbolding28@artisteer.com',
+    "phone": '541-885-8262',
+    "country": 'China',
+    "org_id": 2,
+    "role_id": 2,
+  },
+]
+```
+
+**/--------------------------------------------/ GET SINGLE USER /-----------------------------------/**
+
+### **Get a single User**
+
+_method url_: `/api/users/:id`
+
+_http method_: **[GET]**
+
+#### Response
+
+##### 200 (ok)
+
+###### Example response
+
+```
+[
+  {
+    "id": 1,
+    "name": 'Luz Gabits',
+    "password": 'jzqqDJx',
+    "email": 'lgabits25@gmpg.org',
+    "phone": '175-607-6017',
+    "country": 'Albania',
+    "org_id": 1,
+    "role_id": 2,
+  },
+]
+```
+
 ### Dependencies Installed:
 
 - npx gitignore node
