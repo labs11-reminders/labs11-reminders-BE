@@ -10,6 +10,43 @@ const client = require('twilio')(   // Perhaps NEW?
   process.env.TWILIO_AUTH_TOKEN
 );  // end twilio
 
+
+//AuthO
+var session = require('express-session');
+var dotenv = require('dotenv');
+var passport = require('passport');
+var Auth0Strategy = require('passport-auth0');
+
+dotenv.config();
+
+   //configure Passport to use Auth0 
+var strategy = new Auth0Strategy(
+  {
+      domain: process.env.AUTH0_DOMAIN,
+      clientID: process.env.AUTH0_CLIENT_ID,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
+  },
+  function (accessToken, refreshToken, extraParams, profile, done) {
+      //the access token is what is used to call the Auth0 API
+      //the extraParams.id_token has the JWT
+      //profile has all of the information about the user
+      return done(null, profile);
+  }
+);
+
+passport.use(strategy);
+
+  // You can use this section to keep a smaller payload
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
+// end Auth0
+
 const usersRoutes = require('../routes/usersRoutes.js');
 
 const server = express();
@@ -17,6 +54,28 @@ const server = express();
 server.use(helmet());
 server.use(cors());
 server.use(express.json());
+
+//Auth0
+  //configuring the express-session
+var userSession = {
+  secret: 'TWO LAWYERS A CAREER COACH AND A WRITER WALK INTO A BAR',
+  cookies: {},
+  resave: false,
+  saveUninitialized: true
+};
+
+// if (server.get('env') === 'production') {
+//   userSession.cookie.secure: true //requires https
+// };
+
+server.use(session(userSession));
+
+  //these two commands must be located in the authentication application code
+  //after the application of the express middleware
+server.use(passport.initialize());
+server.use(passport.session());
+// end Auth0
+
 
 // twilio
 server.use(bodyParser.urlencoded({ extended: false }));
