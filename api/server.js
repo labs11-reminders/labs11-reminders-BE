@@ -8,20 +8,7 @@ const jwks = require('jwks-rsa');
 const jwtAuthz = require('express-jwt-authz');
 
 const secured = require('../middleware/secured.js');
-//   //Authentication middleware
-// var jwtCheck = jwt({
-//   secret: jwks.expressJwtSecret({
-//       cache: true,
-//       rateLimit: true,
-//       jwksRequestsPerMinute: 5,
-//       jwksUri: "https://dev-fkl4pfae.auth0.com/.well-known/jwks.json"
-//   }),
-//   audience: 'https://localhost:3000/users',
-//   issuer: "https://dev-fkl4pfae.auth0.com/",
-//   algorithms: ['RS256']
-// });
-// // end Auth0
-
+// end Auth0
 
 // twilio
 const bodyParser = require('body-parser');
@@ -32,7 +19,10 @@ const client = require('twilio')(   // Perhaps NEW?
 );  // end twilio
 
 const usersRoutes = require('../routes/usersRoutes.js');
-const routes = require('../routes/katRoutes.js');
+const rolesRoutes = require('../routes/rolesRoutes.js');
+const orgsRoutes = require('../routes/rolesRoutes.js');
+const remindersRoutes = require('../routes/remindersRoutes.js');
+const groupsRoutes = require('../routes/groupsRoutes.js');
 
 const server = express();
  
@@ -41,23 +31,6 @@ server.use(cors());
 server.use(express.json());
 
 
-//Auth0
-  // test end points for authorization
-  //add jwtcheck to endpoints that need to be secure
-
-server.get('/', function(req, res) {
-  res.json({
-    message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
-  });
-});
-
-server.get('/api/private', secured, function(req, res) {
-  res.json({
-    message: 'Hello from a private endpoint! You need to be authenticated to see this.'
-  });
-});
-// end Auth0
-
 // twilio
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
@@ -65,13 +38,19 @@ server.use(pino);   // end twilio
 
 server.use('/users', usersRoutes);
 server.use('/users/:id', usersRoutes);
+server.use('/roles', rolesRoutes);
+server.use('/roles/:id', rolesRoutes);
+server.use('/orgs', orgsRoutes);
+server.use('/orgs/:id', orgsRoutes);
+server.use('/reminders', remindersRoutes);
+server.use('/reminders/:id', remindersRoutes);
+server.use('/groups', groupsRoutes);
+server.use('/groups/:id', rolesRoutes);
 
-server.use('/api/users', routes);
+
 
 server.get('/', (req, res) => {
-
     res.send("Hello there friend!");
-
 });
 
 // Twilio GET name only or use generic World
@@ -108,6 +87,23 @@ server.post('/api/messages', (req, res) => {
         res.send(JSON.stringify({ success: false }));
       });
   });   // End Twilio
+
+//Auth0
+  // test end points for authorization
+  //add jwtcheck to endpoints that need to be secure
+
+server.get('/', function(req, res) {
+    res.json({
+      message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
+    });
+  });
+
+  server.get('/api/private', secured, function(req, res) {
+    res.json({
+      message: 'Hello from a private endpoint! You need to be authenticated to see this.'
+    });
+  });
+// end Auth0
 
 module.exports = server;
 
