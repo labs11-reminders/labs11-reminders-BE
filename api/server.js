@@ -25,7 +25,7 @@ const strategy = new Auth0Strategy(
       domain: process.env.AUTH0_DOMAIN,
       clientID: process.env.AUTH0_CLIENT_ID,
       clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
+      callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3333/auth0/callback'
   },
   function (accessToken, refreshToken, extraParams, profile, done) {
       //the access token is what is used to call the Auth0 API
@@ -49,6 +49,7 @@ passport.deserializeUser(function (user, done) {
 
 const usersRoutes = require('../routes/usersRoutes.js');
 const authRoutes = require('../routes/authRoutes.js')
+
 
 const server = express();
  
@@ -85,10 +86,10 @@ server.use(pino);   // end twilio
 
 server.use('/users', usersRoutes);
 server.use('/users/:id', usersRoutes);
-
+server.use('/auth0', authRoutes);
 server.get('/', (req, res) => {
    
-    res.send("Hello there friend!");
+    res.send("Hello there friend please login!");
     
 
 });
