@@ -9,7 +9,7 @@ const secured = require('../middleware/secured.js');
 //endpoint route handler to get all of the users
 usersRoutes.get('/', async (req, res) => {
   try {
-    const users = await helpers.getAll();
+    const users = await Users.getAllUsers();
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json(error);
@@ -25,5 +25,6 @@ usersRoutes.get('/:id', secured, async (req, res) => {
     res.status(500).json(error);
   }
 });
+
 
 module.exports = usersRoutes;

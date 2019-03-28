@@ -1,37 +1,39 @@
 \* === Done
 
 <!-- *********************** GET ********************** -->
-<!-- Get All Users --> *
-<!-- Get All Roles --> *
-<!-- Get All Groups -->*
-<!-- Get All Orgs -->*
-<!-- Get All UserDetails (Org + Role + Group + Reminder) -->
-<!-- Get All Groups By Users -->*
-<!-- Get Users By Organization -->*
-<!-- Get All User Reminders/reminders -->*
-<!-- Get Reminders/reminders By Group -->*
-<!--??????????? Get Templates/reminders By Role/Org ?????????--> Dont know if this is possible and how the relationship would look like. (Useful where CountryManager sets templates/messages for respective org.
-<!-- Get UserById -->*
-<!-- Get RoleById -->*
-<!-- Get GroupById -->*
-<!-- Get ReminderById -->*
+<!-- Get All Users --> * K
+<!-- Get All Roles --> * K
+<!-- Get All Groups -->* K
+<!-- Get All Orgs -->* K
+
+<!-- Get All UserDetails (Org + Role + Group + Reminder) --> EEE
+<!-- Get All Groups By Users -->* EEE
+<!-- Get Users By Organization -->* EEE
+<!-- Get All User Reminders/reminders -->* EEE
+<!-- Get Reminders/reminders By Group -->* EEE
+<!--??????????? Get Templates/reminders By Role/Org ?????????--> Dont know if this is possible and how the relationship would look like. (Useful where CountryManager sets templates/messages for respective org. EEE
+
+<!-- Get UserById -->* K
+<!-- Get RoleById -->* K
+<!-- Get GroupById -->* K
+<!-- Get ReminderById -->* K
 
 <!-- *********************** POST ********************** -->
 
-<!-- Register User -->
-<!-- Login User -->
-<!-- Create User -->*
-<!-- Create Group -->*
-<!-- Create Organization -->*
-<!-- Create Message/Reminder/Reminder -->*
+<!-- Register User --> R
+<!-- Login User --> R
+<!-- Create User -->* R
+<!-- Create Group -->* R
+<!-- Create Organization -->* R
+<!-- Create Message/Reminder/Reminder -->* R
 
 <!-- *********************** UPDATE ********************** -->
-<!-- Update User -->*
-<!-- Update Group -->*
-<!-- Update Organization -->*
-<!-- Update Message/Reminder/Reminder -->*
+<!-- Update User -->* EEE
+<!-- Update Group -->* EEE
+<!-- Update Organization -->* EEE
+<!-- Update Message/Reminder/Reminder -->* EEE
 
 <!-- *********************** DELETE ********************** -->
-<!-- Delete User -->*
-<!-- Delete Group -->*
-<!-- Delete Reminder -->*
+<!-- Delete User -->* K
+<!-- Delete Group -->* K 
+<!-- Delete Reminder -->* K
