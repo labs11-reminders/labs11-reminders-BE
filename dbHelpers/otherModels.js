@@ -7,21 +7,25 @@ module.exports = {
   getUsersByRole,
   getUsersByOrg,
   getGroupsByUser,
-  getTemplatesByUser,
-  getTemplatesByGroup,
+  getRemindersByUser,
+  getRemindersByGroup,
   getRoleById,
   getGroupById,
-  getTemplateById,
+  getReminderById,
 
   createUser,
   createGroup,
   createOrg,
-  createTemplate,
+  createReminder,
 
   updateUser,
   updateGroup,
   updateOrg,
-  updateTemplate,
+  updateReminder,
+
+  deleteUser,
+  deleteGroup,
+  deleteReminder,
 };
 
 //gets all roles in the roles database
@@ -54,14 +58,14 @@ function getGroupsByUser(id) {
   return db('group').where({ user_id: id });
 }
 
-//gets all templates/reminders/messages a user created
-function getTemplatesByUser(id) {
-  return db('templates').where({ user_id: id });
+//gets all Reminders/reminders/messages a user created
+function getRemindersByUser(id) {
+  return db('reminders').where({ user_id: id });
 }
 
-//gets all templates/reminders/messages attached to a group
-function getTemplatesByGroup(id) {
-  return db('templates').where({ group_id: id });
+//gets all Reminders/messages attached to a group
+function getRemindersByGroup(id) {
+  return db('reminders').where({ group_id: id });
 }
 
 //gets roles by id
@@ -78,9 +82,9 @@ function getGroupById(id) {
     .first();
 }
 
-//gets template by id
-function getTemplateById(id) {
-  return db('templates')
+//gets Reminder by id
+function getReminderById(id) {
+  return db('reminders')
     .where({ id })
     .first();
 }
@@ -98,8 +102,8 @@ function createOrg(org) {
   return db('orgs').insert(org);
 }
 
-function createTemplate(template) {
-  return db('templates').insert(template);
+function createReminder(Reminder) {
+  return db('reminders').insert(Reminder);
 }
 
 //*********************************** UPDATE ***************************/
@@ -121,8 +125,25 @@ function updateOrg(id, body) {
     .update(body);
 }
 
-function updateTemplate(id, body) {
-  return db('templates')
+function updateReminder(id, body) {
+  return db('reminders')
     .where({ id })
     .update(body);
+}
+
+//*********************************** DELETE ***************************/
+function deleteUser(id) {
+  return db('users')
+    .where({ id })
+    .del();
+}
+function deleteGroup(id) {
+  return db('groups')
+    .where({ id })
+    .del();
+}
+function deleteReminder(id) {
+  return db('reminders')
+    .where({ id })
+    .del();
 }
