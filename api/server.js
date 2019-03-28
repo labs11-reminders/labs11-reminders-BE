@@ -11,6 +11,7 @@ const client = require('twilio')(   // Perhaps NEW?
 );  // end twilio
 
 const usersRoutes = require('../routes/usersRoutes.js');
+const routes = require('../routes/katRoutes.js');
 
 const server = express();
 
@@ -26,11 +27,10 @@ server.use(pino);   // end twilio
 server.use('/users', usersRoutes);
 server.use('/users/:id', usersRoutes);
 
-server.get('/', (req, res) => {
-   
-    res.send("Hello there friend!");
-    
+server.use('/api/users', routes);
 
+server.get('/', (req, res) => {
+    res.send("Hello there friend!");
 });
 
 // Twilio GET name only or use generic World
