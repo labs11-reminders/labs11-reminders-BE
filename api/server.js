@@ -2,6 +2,27 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
+//Auth 0
+const jwt = require('express-jwt');
+const jwks = require('jwks-rsa');
+const jwtAuthz = require('express-jwt-authz');
+
+
+  //Authentication middleware
+var jwtCheck = jwt({
+  secret: jwks.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: "https://dev-fkl4pfae.auth0.com/.well-known/jwks.json"
+  }),
+  audience: 'https://localhost:3000/users',
+  issuer: "https://dev-fkl4pfae.auth0.com/",
+  algorithms: ['RS256']
+});
+// end Auth0
+
+
 // twilio
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
@@ -10,46 +31,7 @@ const client = require('twilio')(   // Perhaps NEW?
   process.env.TWILIO_AUTH_TOKEN
 );  // end twilio
 
-
-//AuthO
-const session = require('express-session');
-const dotenv = require('dotenv');
-const passport = require('passport');
-const Auth0Strategy = require('passport-auth0');
-
-dotenv.config();
-
-   //configure Passport to use Auth0 
-const strategy = new Auth0Strategy(
-  {
-      domain: process.env.AUTH0_DOMAIN,
-      clientID: process.env.AUTH0_CLIENT_ID,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3333/auth0/callback'
-  },
-  function (accessToken, refreshToken, extraParams, profile, done) {
-      //the access token is what is used to call the Auth0 API
-      //the extraParams.id_token has the JWT
-      //profile has all of the information about the user
-      return done(null, profile);
-  }
-);
-
-passport.use(strategy);
-
-  // You can use this section to keep a smaller payload
-passport.serializeUser(function (user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function (user, done) {
-  done(null, user);
-});
-// end Auth0
-
 const usersRoutes = require('../routes/usersRoutes.js');
-const authRoutes = require('../routes/authRoutes.js')
-
 
 const server = express();
  
@@ -58,26 +40,21 @@ server.use(cors());
 server.use(express.json());
 
 //Auth0
-  //configuring the express-session
-const userSession = {
-  secret: 'TWO LAWYERS A CAREER COACH AND A WRITER WALK INTO A BAR',
-  cookies: {},
-  resave: false,
-  saveUninitialized: true
-};
+  // test end points for authorization
+  //add jwtcheck to endpoints that need to be secure
 
-// if (server.get('env') === 'production') {
-//   userSession.cookie.secure: true //requires https
-// };
+server.get('/', function(req, res) {
+  res.json({
+    message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
+  });
+});
 
-server.use(session(userSession));
-
-  //these two commands must be located in the authentication application code
-  //after the application of the express middleware
-server.use(passport.initialize());
-server.use(passport.session());
+server.get('/api/private', jwtCheck, function(req, res) {
+  res.json({
+    message: 'Hello from a private endpoint! You need to be authenticated to see this.'
+  });
+});
 // end Auth0
-
 
 // twilio
 server.use(bodyParser.urlencoded({ extended: false }));
@@ -86,7 +63,7 @@ server.use(pino);   // end twilio
 
 server.use('/users', usersRoutes);
 server.use('/users/:id', usersRoutes);
-server.use('/auth0', authRoutes);
+
 server.get('/', (req, res) => {
    
     res.send("Hello there friend please login!");
