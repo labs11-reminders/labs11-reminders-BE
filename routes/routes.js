@@ -2,35 +2,18 @@ const express = require('express');
 
 const helpers = require('../dbHelpers/otherModels.js');
 
-const rRoutes = express.Router();
+const routes = express.Router();
 
-//endpoint route handler to create a new user
-postRoutes.post('/users', async (req, res) => {
-    try {
-        
-        if (req.body.name == null || req.body.password == null || req.body.email == null
-            || req.body.phone == null || req.body.country == null || req.body.org_id == null
-            || req.body.role_id == null) {
-            res.status(400).json({errorMessage: "Please provide information for all of the form fields."});
-        } else {
-            const user = await helpers.createUser(req.body);
-            res.status(201).json(user)
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: "There was an error while saving the user to the database"});
-    }
-});
 
 
 //endpoint route handler to create a new group
-postRoutes.post('/groups', async (req, res) => {
+routes.post('/api/groups', async (req, res) => {
     try {
         
         if (req.body.name == null) {
             res.status(400).json({errorMessage: "Please provide a name for the group or class."});
         } else {
-            const group = await helpers.createGroups(req.body);
+            const group = await helpers.createGroup(req.body);
             res.status(201).json(group)
         }
     } catch (error) {
@@ -42,7 +25,7 @@ postRoutes.post('/groups', async (req, res) => {
 
 
 //endpoint route handler to create a new organization
-postRoutes.post('/orgs', async (req, res) => {
+routes.post('/api/orgs', async (req, res) => {
     try {
         
         if (req.body.name == null || req.body.description == null) {
@@ -60,7 +43,7 @@ postRoutes.post('/orgs', async (req, res) => {
 
 
 //endpoint route handler to create a new message/reminder
-postRoutes.post('/reminders', async (req, res) => {
+routes.post('/api/reminders', async (req, res) => {
     try {
         
         if (req.body.name == null || req.body.description == null || 
@@ -76,4 +59,4 @@ postRoutes.post('/reminders', async (req, res) => {
     }
 });
 
-module.exports = rRoutes;
+module.exports = routes;

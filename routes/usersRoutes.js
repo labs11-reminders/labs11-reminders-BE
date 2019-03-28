@@ -26,4 +26,22 @@ usersRoutes.get('/:id', secured, async (req, res) => {
   }
 });
 
+//endpoint route handler to create a new user
+usersRoutes.post('/api/users', async (req, res) => {
+  try {
+      
+      if (req.body.name == null || req.body.password == null || req.body.email == null
+          || req.body.phone == null || req.body.country == null || req.body.org_id == null
+          || req.body.role_id == null) {
+          res.status(400).json({errorMessage: "Please provide information for all of the form fields."});
+      } else {
+          const user = await helpers.createUser(req.body);
+          res.status(201).json(user)
+      }
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "There was an error while saving the user to the database"});
+  }
+});
+
 module.exports = usersRoutes;
