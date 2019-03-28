@@ -91,19 +91,19 @@ function getReminderById(id) {
 
 //*********************************** CREATE ***************************/
 function createUser(user) {
-  return db('users').insert(user);
+  return db('users').insert(user, 'id');
 }
 
 function createGroup(group) {
-  return db('groups').insert(group);
+  return db('groups').insert(group, 'id');
 }
 
 function createOrg(org) {
-  return db('orgs').insert(org);
+  return db('orgs').insert(org, 'id');
 }
 
 function createReminder(Reminder) {
-  return db('reminders').insert(Reminder);
+  return db('reminders').insert(Reminder, 'id');
 }
 
 //*********************************** UPDATE ***************************/
