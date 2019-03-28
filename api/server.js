@@ -7,20 +7,20 @@ const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
 const jwtAuthz = require('express-jwt-authz');
 
-
-  //Authentication middleware
-var jwtCheck = jwt({
-  secret: jwks.expressJwtSecret({
-      cache: true,
-      rateLimit: true,
-      jwksRequestsPerMinute: 5,
-      jwksUri: "https://dev-fkl4pfae.auth0.com/.well-known/jwks.json"
-  }),
-  audience: 'https://localhost:3000/users',
-  issuer: "https://dev-fkl4pfae.auth0.com/",
-  algorithms: ['RS256']
-});
-// end Auth0
+const secured = require('../middleware/secured.js');
+//   //Authentication middleware
+// var jwtCheck = jwt({
+//   secret: jwks.expressJwtSecret({
+//       cache: true,
+//       rateLimit: true,
+//       jwksRequestsPerMinute: 5,
+//       jwksUri: "https://dev-fkl4pfae.auth0.com/.well-known/jwks.json"
+//   }),
+//   audience: 'https://localhost:3000/users',
+//   issuer: "https://dev-fkl4pfae.auth0.com/",
+//   algorithms: ['RS256']
+// });
+// // end Auth0
 
 
 // twilio
@@ -39,6 +39,7 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
+
 //Auth0
   // test end points for authorization
   //add jwtcheck to endpoints that need to be secure
@@ -49,7 +50,7 @@ server.get('/', function(req, res) {
   });
 });
 
-server.get('/api/private', jwtCheck, function(req, res) {
+server.get('/api/private', secured, function(req, res) {
   res.json({
     message: 'Hello from a private endpoint! You need to be authenticated to see this.'
   });
