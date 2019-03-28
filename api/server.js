@@ -40,9 +40,19 @@ server.get('/api/greeting', (req, res) => {
     res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
   }); 
 
+  // server.get('/api/message-list', (req, res) => {
+  //   const name = req.query.name || 'World';
+  //   res.setHeader('Content-Type', 'application/json');
+  //   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
+  // });
+
+
 // POST SMS immediate only
 server.post('/api/messages', (req, res) => {
     res.header('Content-Type', 'application/json');
+    // console.log("RES", res.header, res.body);
+    // console.log("REQ", req);
+    // res.header('Content-Type', 'application/json');
     client.messages
       .create({
         from: process.env.TWILIO_PHONE_NUMBER,

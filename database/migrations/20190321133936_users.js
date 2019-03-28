@@ -15,7 +15,7 @@ exports.up = function(knex, Promise) {
       .integer('org_id')
       .unsigned()
       .notNullable()
-      .references('id')
+      .yreferences('id')
       .inTable('orgs');
     users
       .integer('role_id')
