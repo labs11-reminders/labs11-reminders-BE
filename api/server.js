@@ -19,7 +19,10 @@ const client = require('twilio')(   // Perhaps NEW?
 );  // end twilio
 
 const usersRoutes = require('../routes/usersRoutes.js');
-const routes = require('../routes/routes.js');
+const rolesRoutes = require('../routes/rolesRoutes.js');
+const orgsRoutes = require('../routes/rolesRoutes.js');
+const remindersRoutes = require('../routes/remindersRoutes.js');
+const groupsRoutes = require('../routes/groupsRoutes.js');
 
 const server = express();
  
@@ -35,10 +38,16 @@ server.use(pino);   // end twilio
 
 server.use('/users', usersRoutes);
 server.use('/users/:id', usersRoutes);
-server.use('/api/users', routes);
-server.use('/api/groups', routes);
-server.use('/api/orgs', routes);
-server.use('/api/reminders', routes);
+server.use('/roles', rolesRoutes);
+server.use('/roles/:id', rolesRoutes);
+server.use('/orgs', orgsRoutes);
+server.use('/orgs/:id', orgsRoutes);
+server.use('/reminders', remindersRoutes);
+server.use('/reminders/:id', remindersRoutes);
+server.use('/groups', groupsRoutes);
+server.use('/groups/:id', rolesRoutes);
+
+
 
 server.get('/', (req, res) => {
     res.send("Hello there friend!");
@@ -51,9 +60,19 @@ server.get('/api/greeting', (req, res) => {
     res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
   }); 
 
+  // server.get('/api/message-list', (req, res) => {
+  //   const name = req.query.name || 'World';
+  //   res.setHeader('Content-Type', 'application/json');
+  //   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
+  // });
+
+
 // POST SMS immediate only
 server.post('/api/messages', (req, res) => {
     res.header('Content-Type', 'application/json');
+    // console.log("RES", res.header, res.body);
+    // console.log("REQ", req);
+    // res.header('Content-Type', 'application/json');
     client.messages
       .create({
         from: process.env.TWILIO_PHONE_NUMBER,
