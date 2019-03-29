@@ -20,7 +20,7 @@ const client = require('twilio')(   // Perhaps NEW?
 
 const usersRoutes = require('../routes/usersRoutes.js');
 const rolesRoutes = require('../routes/rolesRoutes.js');
-const orgsRoutes = require('../routes/rolesRoutes.js');
+const orgsRoutes = require('../routes/orgsRoutes.js');
 const remindersRoutes = require('../routes/remindersRoutes.js');
 const groupsRoutes = require('../routes/groupsRoutes.js');
 
@@ -92,17 +92,17 @@ server.post('/api/messages', (req, res) => {
   // test end points for authorization
   //add jwtcheck to endpoints that need to be secure
 
-server.get('/', function(req, res) {
-    res.json({
-      message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
-    });
-  });
+// server.get('/', function(req, res) {
+//     res.json({
+//       message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
+//     });
+//   });
 
-  server.get('/api/private', secured, function(req, res) {
-    res.json({
-      message: 'Hello from a private endpoint! You need to be authenticated to see this.'
-    });
-  });
+//   server.get('/api/private', secured, function(req, res) {
+//     res.json({
+//       message: 'Hello from a private endpoint! You need to be authenticated to see this.'
+//     });
+//   });
 // end Auth0
 
 module.exports = server;
