@@ -38,16 +38,16 @@ server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
 server.use(pino); // end twilio
 
-server.use('/users', usersRoutes);//yay / post yay 
-server.use('/users/:id', usersRoutes);//yay /put yay
-server.use('/roles', rolesRoutes);//yay p&p na
-server.use('/roles/:id', rolesRoutes);//yay p&p na
-server.use('/orgs', orgsRoutes); //oops 
-server.use('/orgs/:id', orgsRoutes);//oops post na
-server.use('/reminders', remindersRoutes);//oops
-server.use('/reminders/:id', remindersRoutes);//oops / post na 
-server.use('/groups', groupsRoutes);//yay / post yay
-server.use('/groups/:id', groupsRoutes);//yay post na
+server.use('/api/users', usersRoutes);//yay / post yay 
+server.use('/api/users/:id', usersRoutes);//yay /put yay
+server.use('/api/roles', rolesRoutes);//yay p&p na
+server.use('/api/roles/:id', rolesRoutes);//yay p&p na
+server.use('/api/orgs', orgsRoutes); //oops 
+server.use('/api/orgs/:id', orgsRoutes);//oops post na
+server.use('/api/reminders', remindersRoutes);//oops
+server.use('/api/reminders/:id', remindersRoutes);//oops / post na 
+server.use('/api/groups', groupsRoutes);//yay / post yay
+server.use('/api/groups/:id', groupsRoutes);//yay post na
 
 configureRoutes(server);
 
