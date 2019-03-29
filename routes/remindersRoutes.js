@@ -9,7 +9,7 @@ const secured = require('../middleware/secured.js');
 
 //endpoint route handler that gets a single user by id
 remindersRoutes.get('/:id', async (req, res) => {
-    try {
+     try {
       const reminder = await helpers.getReminderById(req.params.id);
       if (reminder) {
         res.status(200).json(reminder);

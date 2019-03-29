@@ -26,6 +26,19 @@ module.exports = {
   deleteUser,
   deleteGroup,
   deleteReminder,
+
+  getAll,
+  getById
+};
+
+function getAll() {
+  return db('users');
+}
+
+//gets a user by their user id number
+function getById(id) {
+  return db('users')
+  .where('id', Number(id))
 };
 
 //gets all roles in the roles database

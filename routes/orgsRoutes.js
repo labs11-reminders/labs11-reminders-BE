@@ -7,7 +7,7 @@ const orgsRoutes = express.Router();
 const secured = require('../middleware/secured.js');
 
 //endpoint route handler to get all of the users
-routes.get('/', async (req, res) => {
+orgsRoutes.get('/', async (req, res) => {
     try {
       const orgs = await helpers.getAllOrgs();
       res.status(200).json(orgs);
