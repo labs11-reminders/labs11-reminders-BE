@@ -7,7 +7,7 @@ const groupsRoutes  = express.Router();
 const secured = require('../middleware/secured.js');
 
 groupsRoutes .delete('/:id', (req, res) => {
-    return helpers.remove(req.params.id)
+    return helpers.deleteGroup(req.params.id)
       .then(count => {
         if (count === 0) {
           res.status(404).json({ message: 'Elisha is working on an amazaing 404 page. In the meantime you get this boring message.'});
@@ -19,7 +19,7 @@ groupsRoutes .delete('/:id', (req, res) => {
   });
 
 //endpoint route handler that gets a single user by id
-groupsRoutes .get('/:id', async (req, res) => {
+groupsRoutes.get('/:id', async (req, res) => {
     try {
       const group = await helpers.getGroupById(req.params.id);
       if (group) {
@@ -33,7 +33,7 @@ groupsRoutes .get('/:id', async (req, res) => {
   });
 
   //endpoint route handler to get all of the users
-groupsRoutes .get('/', async (req, res) => {
+groupsRoutes.get('/', async (req, res) => {
     try {
       const groups = await helpers.getAllGroups();
       res.status(200).json(groups);
@@ -49,7 +49,7 @@ groupsRoutes.post('/', async (req, res) => {
       if (req.body.name == null) {
           res.status(400).json({errorMessage: "Please provide a name for the group or class."});
       } else {
-          const group = await helpers.createGroups(req.body);
+          const group = await helpers.createGroup(req.body);
           res.status(201).json(group)
       }
   } catch (error) {
