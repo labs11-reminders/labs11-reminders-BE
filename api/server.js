@@ -89,26 +89,5 @@ server.post('/api/messages', (req, res) => {
     });
 }); // End Twilio
 
-<<<<<<< HEAD
-=======
-//Auth0
-// test end points for authorization
-//add jwtcheck to endpoints that need to be secure
-
-server.get('/', function(req, res) {
-  res.json({
-    message:
-      "Hello from a public endpoint! You don't need to be authenticated to see this.",
-  });
-});
-
-server.get('/api/private', secured, function(req, res) {
-  res.json({
-    message:
-      'Hello from a private endpoint! You need to be authenticated to see this.',
-  });
-});
-// end Auth0
->>>>>>> e8fa185ac5c4ed32d8214a095ec9071e8c2aeeb4
 
 module.exports = server;
