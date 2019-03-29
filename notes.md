@@ -35,5 +35,5 @@
 
 <!-- *********************** DELETE ********************** -->
 <!-- Delete User -->* K
-<!-- Delete Group -->* K 
+<!-- Delete Group -->* K
 <!-- Delete Reminder -->* K
