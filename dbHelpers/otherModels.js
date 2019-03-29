@@ -4,6 +4,7 @@ module.exports = {
   getAllRoles,
   getAllGroups,
   getAllOrgs,
+  getAllReminders,
   getUsersByRole,
   getUsersByOrg,
   getGroupsByUser,
@@ -12,6 +13,7 @@ module.exports = {
   getRoleById,
   getGroupById,
   getReminderById,
+  getOrgsById,
 
   createUser,
   createGroup,
@@ -43,6 +45,18 @@ function getAllOrgs() {
   return db('orgs');
 }
 
+//gets all reminders in the reminders database
+function getAllReminders() {
+  return db('reminders');
+}
+
+//gets organizations by id in the orgs database
+function getOrgsById(id) {
+  return db('orgs')
+    .where({ id })
+    .first();
+}
+
 //gets all users of certain role from users db
 function getUsersByRole(id) {
   return db('users').where({ role_id: id });
@@ -55,7 +69,7 @@ function getUsersByOrg(id) {
 
 //gets all groups a user belongs to
 function getGroupsByUser(id) {
-  return db('group').where({ user_id: id });
+  return db('groups').where({ user_id: id });
 }
 
 //gets all Reminders/reminders/messages a user created

@@ -25,3 +25,13 @@ usersRoutes.get('/:id', async (req, res) => {
 });
 
 module.exports = usersRoutes;
+
+getUserGroups,
+  getOrgUsers,
+  getReminders,
+  getUserReminders,
+  getGroupReminders,
+  editUser,
+  editGroup,
+  editOrganization,
+  editReminder;
