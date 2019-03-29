@@ -21,8 +21,7 @@ usersRoutes.get('/:id', secured, async (req, res) => {
   try {
     const user = await helpers.getById(req.params.id);
     res.status(200).json(user);
-  } 
-    catch (error) {
+  } catch (error) {
     res.status(500).json(error);
   }
 });
@@ -41,21 +40,38 @@ usersRoutes.post('/', async (req, res) => {
           res.status(201).json(user)
       }
   } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "There was an error while saving the user to the database"});
+    console.log(error);
+    res
+      .status(500)
+      .json({
+        error: 'There was an error while saving the user to the database',
+      });
   }
 });
 
 usersRoutes.delete('/:id', (req, res) => {
-  return helpers.deleteUser(req.params.id)
+  return helpers
+    .deleteUser(req.params.id)
     .then(count => {
       if (count === 0) {
-        res.status(404).json({ message: 'Elisha is working on an amazaing 404 page. In the meantime you get this boring message.'});
+        res
+          .status(404)
+          .json({
+            message:
+              'Elisha is working on an amazaing 404 page. In the meantime you get this boring message.',
+          });
       } else {
-        res.status(200).json({ message: 'User has been deleted.'});
+        res.status(200).json({ message: 'User has been deleted.' });
       }
     })
-    .catch(err => res.status(500).json({ message: 'This is embarrassing. Please try to refresh the page and/or Slack us.'}));
+    .catch(err =>
+      res
+        .status(500)
+        .json({
+          message:
+            'This is embarrassing. Please try to refresh the page and/or Slack us.',
+        }),
+    );
 });
 
 module.exports = usersRoutes;

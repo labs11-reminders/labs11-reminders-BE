@@ -19,7 +19,7 @@ exports.seed = function(knex, Promise) {
         {
           name: 'Class Cancellation',
           description:
-            'This Thursday\s class is cancelled. We will meet again next week.',
+            'This Thursdays class is cancelled. We will meet again next week.',
           created_at: '03282019',
           group_id: 2,
           user_id: 1,
