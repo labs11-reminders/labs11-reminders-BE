@@ -19,18 +19,24 @@ module.exports = {
   createGroup,
   createOrg,
   createReminder,
+  createRole,
 
   updateUser,
   updateGroup,
   updateOrg,
   updateReminder,
+  updateRole,
 
   deleteUser,
   deleteGroup,
   deleteReminder,
+  deleteOrg,
+  deleteRole,
 
   getAll,
-  getById
+  getById,
+
+  findById, //for the org db
 };
 
 function getAll() {
@@ -133,6 +139,10 @@ function createReminder(Reminder) {
   return db('reminders').insert(Reminder, 'id');
 }
 
+function createRole(role) {
+  return db('roles').insert(role, 'id');
+}
+
 //*********************************** UPDATE ***************************/
 function updateUser(id, body) {
   return db('users')
@@ -158,6 +168,12 @@ function updateReminder(id, body) {
     .update(body);
 }
 
+function updateRole(id, body) {
+  return db('roles')
+    .where({ id })
+    .update(body);
+}
+
 //*********************************** DELETE ***************************/
 function deleteUser(id) {
   return db('users')
@@ -174,3 +190,22 @@ function deleteReminder(id) {
     .where({ id })
     .del();
 }
+function deleteOrg(id) {
+  return db('orgs')
+    .where({ id })
+    .del();
+}
+
+function deleteRole(id) {
+  return db('roles')
+    .where({ id })
+    .del();
+}
+
+//*********************************** Find By ***************************/
+
+//gets only the org in the table with that particular id
+function findById(id) {
+  return db('orgs')
+  .where('id', Number(id))
+};

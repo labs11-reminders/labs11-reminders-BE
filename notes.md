@@ -20,20 +20,24 @@
 
 <!-- *********************** POST ********************** -->
 
-<!-- Register User --> R
-<!-- Login User --> R
+<!-- Register User --> *R
+<!-- Login User --> *R
 <!-- Create User -->* R
 <!-- Create Group -->* R
 <!-- Create Organization -->* R
 <!-- Create Message/Reminder/Reminder -->* R
+<!-- Create User User --> *R
 
 <!-- *********************** UPDATE ********************** -->
 <!-- Update User -->* EEE
 <!-- Update Group -->* EEE
 <!-- Update Organization -->* EEE
 <!-- Update Message/Reminder/Reminder -->* EEE
+<!-- Update Role -->* R
 
 <!-- *********************** DELETE ********************** -->
 <!-- Delete User -->* K
 <!-- Delete Group -->* K
 <!-- Delete Reminder -->* K
+<!-- Delete Role -->* R
+<!-- Delete Organization -->* R

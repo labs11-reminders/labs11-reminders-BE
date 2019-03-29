@@ -32,4 +32,29 @@ orgsRoutes.post('/', async (req, res) => {
   }
 });
 
+//endpoint route handler to delete and organization
+orgsRoutes.delete('/:id', async (req, res) => {
+  try {
+    const org = await helpers.findById(req.params.id)
+    console.log(org);
+    console.log(req.params.id);
+    if (org) {
+        try {
+            const destroy = await helpers.deleteOrg(req.params.id);
+            if (destroy) {
+                res.status(200).json({message: 'The organization has been deleted.'});
+            }
+        } catch (error) {
+            console.log(error);
+            console.log(req.params.id);
+            res.status(500).json({error: 'The organization could not be deleted.'});
+        }
+    } else {
+        res.status(404).json({message: 'An organization with the specified ID does not exist.'});
+    }
+} catch (error) {
+    res.status(500).json({error: 'The organization could not be removed.'});
+}
+});
+
 module.exports = orgsRoutes;  
