@@ -29,11 +29,10 @@ const remindersRoutes = require('../routes/remindersRoutes.js');
 const groupsRoutes = require('../routes/groupsRoutes.js');
 
 const server = express();
- 
+
 server.use(helmet());
 server.use(cors());
 server.use(express.json());
-
 
 // twilio
 server.use(bodyParser.urlencoded({ extended: false }));
@@ -51,17 +50,10 @@ server.use('/reminders/:id', remindersRoutes);
 server.use('/groups', groupsRoutes);
 server.use('/groups/:id', rolesRoutes);
 
-
-
-<<<<<<< HEAD
 configureRoutes(server);
 
 server.get('/', (req, res) => {
   res.send('Hello there friend!');
-=======
-server.get('/', (req, res) => {
-    res.send("Hello there friend!");
->>>>>>> 246eacaa36d19c5c48fabcafa8868d637a442767
 });
 
 // Twilio GET name only or use generic World
@@ -71,17 +63,18 @@ server.get('/api/greeting', (req, res) => {
   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
 });
 
-  // server.get('/api/message-list', (req, res) => {
-  //   const name = req.query.name || 'World';
-  //   res.setHeader('Content-Type', 'application/json');
-  //   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
-  // });
-
+// server.get('/api/message-list', (req, res) => {
+//   const name = req.query.name || 'World';
+//   res.setHeader('Content-Type', 'application/json');
+//   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
+// });
 
 // POST SMS immediate only
 server.post('/api/messages', (req, res) => {
-<<<<<<< HEAD
   res.header('Content-Type', 'application/json');
+  // console.log("RES", res.header, res.body);
+  // console.log("REQ", req);
+  // res.header('Content-Type', 'application/json');
   client.messages
     .create({
       from: process.env.TWILIO_PHONE_NUMBER,
@@ -96,42 +89,24 @@ server.post('/api/messages', (req, res) => {
       res.send(JSON.stringify({ success: false }));
     });
 }); // End Twilio
-=======
-    res.header('Content-Type', 'application/json');
-    // console.log("RES", res.header, res.body);
-    // console.log("REQ", req);
-    // res.header('Content-Type', 'application/json');
-    client.messages
-      .create({
-        from: process.env.TWILIO_PHONE_NUMBER,
-        to: req.body.to,
-        body: req.body.body
-      })
-      .then(() => {
-        res.send(JSON.stringify({ success: true }));
-      })
-      .catch(err => {
-        console.log(err);
-        res.send(JSON.stringify({ success: false }));
-      });
-  });   // End Twilio
->>>>>>> 246eacaa36d19c5c48fabcafa8868d637a442767
 
 //Auth0
-  // test end points for authorization
-  //add jwtcheck to endpoints that need to be secure
+// test end points for authorization
+//add jwtcheck to endpoints that need to be secure
 
 server.get('/', function(req, res) {
-    res.json({
-      message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
-    });
+  res.json({
+    message:
+      "Hello from a public endpoint! You don't need to be authenticated to see this.",
   });
+});
 
-  server.get('/api/private', secured, function(req, res) {
-    res.json({
-      message: 'Hello from a private endpoint! You need to be authenticated to see this.'
-    });
+server.get('/api/private', secured, function(req, res) {
+  res.json({
+    message:
+      'Hello from a private endpoint! You need to be authenticated to see this.',
   });
+});
 // end Auth0
 
 module.exports = server;
