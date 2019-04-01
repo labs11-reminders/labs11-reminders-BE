@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ed24225742fb7369c6e90016d419a9c1ef0290e10356682cfe1dc0d2f5d65a9b"
+            "sha256": "6025b6aab7a1a27b9c5d92eb664148c961c1ff644803e2efb50ab9e3a5a76abb"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -15,8 +15,7 @@
             }
         ]
     },
-    "default": {},
-    "develop": {
+    "default": {
         "apscheduler": {
             "hashes": [
                 "sha256:8f56b888fdc9dc57dd18d79c124b5093a01e29144be84e3e99130600eea34260",
@@ -45,5 +44,6 @@
             ],
             "version": "==1.5.1"
         }
-    }
+    },
+    "develop": {}
 }
