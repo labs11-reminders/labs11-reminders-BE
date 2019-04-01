@@ -17,7 +17,7 @@ usersRoutes.get('/', async (req, res) => {
 });
 
 //endpoint route handler that gets a single user by id
-usersRoutes.get('/:id', secured, async (req, res) => {
+usersRoutes.get('/:id', async (req, res) => {
   try {
     const user = await helpers.getById(req.params.id);
     res.status(200).json(user);

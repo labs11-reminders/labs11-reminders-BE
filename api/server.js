@@ -92,9 +92,7 @@ server.post('/api/messages', (req, res) => {
 // PUT Phone # for twilio to validate
 server.put('/api/twiliovalidation', (req, res) => {
   res.header('Content-Type', 'application/json');
-  // console.log("RES", res.header, res.body);
-  // console.log("REQ", req);
-  // res.header('Content-Type', 'application/json');
+  
   client.validationRequests
     .create({
       friendlyName: req.body.name,
