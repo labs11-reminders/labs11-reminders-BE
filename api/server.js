@@ -87,6 +87,27 @@ server.post('/api/messages', (req, res) => {
       console.log(err);
       res.send(JSON.stringify({ success: false }));
     });
+});
+
+// PUT Phone # for twilio to validate
+server.put('/api/twiliovalidation', (req, res) => {
+  res.header('Content-Type', 'application/json');
+  // console.log("RES", res.header, res.body);
+  // console.log("REQ", req);
+  // res.header('Content-Type', 'application/json');
+  client.validationRequests
+    .create({
+      friendlyName: req.body.name,
+      phoneNumber: req.body.phone,
+    })
+    .then(validation_request  => {
+      console.log(validation_request.friendlyName);
+      res.send(JSON.stringify({ validation_request }));
+    })
+    .catch(err => {
+      console.log(err);
+      res.send(JSON.stringify({ validation: false }));
+    });
 }); // End Twilio
 
 
