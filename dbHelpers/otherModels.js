@@ -23,6 +23,7 @@ module.exports = {
   createReminder,
   createRole,
   addUserToGroup,
+  getUsersByName,
 
   updateUser,
   updateGroup,
@@ -130,6 +131,8 @@ function getUsersByGroupId(id) {
   return db.raw('select users.* from users left join userGroups ug on users.id = ug.user_id left join groups on ug.group_id = groups.id where groups.id = ?', id);
 }
 
+
+
 //*********************************** CREATE ***************************/
 function createUser(user) {
   return db('users').insert(user, 'id');
@@ -156,6 +159,13 @@ function createRole(role) {
 function addUserToGroup(record) {
   return db('userGroups')
   .insert(record);
+}
+
+function getUsersByName(searchString) {
+  searchString = '%' + searchString + '%';
+  console.log('Searching for',searchString);
+  return db('users')
+  .where('name', 'like', searchString);
 }
 
 //*********************************** UPDATE ***************************/
