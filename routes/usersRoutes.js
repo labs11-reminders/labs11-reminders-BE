@@ -74,4 +74,14 @@ usersRoutes.delete('/:id', (req, res) => {
     );
 });
 
+usersRoutes.get('/role/:id', async (req, res) => {
+  try {
+    const users = await helpers.getUsersByRole(req.params.id);
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});  
+
+
 module.exports = usersRoutes;

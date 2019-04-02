@@ -1,8 +1,7 @@
 const db = require('../database/dbConfig.js');
 
 module.exports = {
-  addUserToGroup,
-
+  
   getAllRoles,
   getAllGroups,
   getAllOrgs,
@@ -23,6 +22,7 @@ module.exports = {
   createOrg,
   createReminder,
   createRole,
+  addUserToGroup,
 
   updateUser,
   updateGroup,
@@ -42,22 +42,6 @@ module.exports = {
 
   findById, //for the org db
 };
-
-// Incoming body: 
-// record = { user_id: value, group_id: value }
-function addUserToGroup(record) {
-  return db('userGroups')
-  .insert(record);
-}
-
-function deleteUserFromGroup(user, group) {
-  console.log('Removing user from group:');
-  console.log('user_id:', user);
-  console.log('group_id:', group);
-  return db('userGroups')
-  .where({ user_id: user, group_id: group })
-  .del();
-}
 
 function getAll() {
   return db('users');
@@ -167,6 +151,13 @@ function createRole(role) {
   return db('roles').insert(role, 'id');
 }
 
+// Incoming body: 
+// record = { user_id: value, group_id: value }
+function addUserToGroup(record) {
+  return db('userGroups')
+  .insert(record);
+}
+
 //*********************************** UPDATE ***************************/
 function updateUser(id, body) {
   return db('users')
@@ -224,6 +215,15 @@ function deleteRole(id) {
   return db('roles')
     .where({ id })
     .del();
+}
+
+function deleteUserFromGroup(user, group) {
+  console.log('Removing user from group:');
+  console.log('user_id:', user);
+  console.log('group_id:', group);
+  return db('userGroups')
+  .where({ user_id: user, group_id: group })
+  .del();
 }
 
 //*********************************** Find By ***************************/
