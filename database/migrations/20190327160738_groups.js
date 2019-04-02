@@ -6,12 +6,7 @@ exports.up = function(knex, Promise) {
       .string('name', 255)
       .notNullable()
       .unique();
-    tbl
-      .integer('user_id')
-      .unsigned()
-      .notNullable()
-      .references('id')
-      .inTable('users');
+   
   });
 };
 

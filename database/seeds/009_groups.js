@@ -7,15 +7,15 @@ exports.seed = function(knex, Promise) {
       return knex('groups').insert([
         {
           name: 'Personal Finance',
-          user_id: 2,
+          
         },
         {
           name: 'Establishing a Home Business',
-          user_id: 5,
+          
         },
         {
           name: 'Marketing Your Product',
-          user_id: 3,
+          
         },
       ]);
     });
