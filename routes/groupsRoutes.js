@@ -6,7 +6,7 @@ const groupsRoutes  = express.Router();
 
 const secured = require('../middleware/secured.js');
 
-groupsRoutes .delete('/:id', (req, res) => {
+groupsRoutes.delete('/:id', (req, res) => {
     return helpers.deleteGroup(req.params.id)
       .then(count => {
         if (count === 0) {
@@ -25,7 +25,7 @@ groupsRoutes.get('/:id', async (req, res) => {
       if (group) {
         res.status(200).json(group);
       } else {
-        res.status(404).json({message: 'Elisha is working on an amazaing 404 page. In the meantime you get this boring message.'})
+        res.status(404).json({message: 'Elisha is working on an amazing 404 page. In the meantime you get this boring message.'})
       }
     } catch (error) {
       res.status(500).send({message: 'This is embarrassing. Please try to refresh the page and/or Slack us.'});
@@ -56,6 +56,51 @@ groupsRoutes.post('/', async (req, res) => {
       console.log(error);
       res.status(500).json({ error: "There was an error while saving the group to the database"});
   }
-});  
+});
+
+//endpoint route handler to get a list of users by group
+groupsRoutes.get('/:id/users', async (req, res) => {
+  try {
+    if (req.params.id == null) {
+      res.status(400).json({errorMessage: "Please provide a group id."});
+    } else {
+      const usersGroup = await helpers.getUsersByGroupId(req.params.id);
+      res.status(200).json(usersGroup);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({error: 'There was an error while retrieving the users group.'})
+  }
+});
+
+//endpoint route handler to add a user to a group
+groupsRoutes.post('/add/user', async (req, res) => {
+  try {
+    if (req.body.user_id == null || req.body.group_id == null) {
+      res.status(400).json({errorMessage: 'Please provide a record in the form of {user_id: value, group_id: value}'})
+    } else {
+      const usersGroup = await helpers.addUserToGroup(req.body);
+      res.status(201).json({message: 'User added to group.'});
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({error: 'There was an error while trying to add the user to the group.'})
+  }
+});
+
+//endpoint route handler to delete a user from a group
+groupsRoutes.delete('/remove/user', async (req, res) => {
+  try {
+    if (req.body.user_id == null || req.body.group_id == null) {
+      res.status(400).json({errorMessage: 'Please provide both a user_id and a group_id'})
+    } else {
+      const usersGroup = await helpers.deleteUserFromGroup(req.body.user_id, req.body.group_id);
+      res.status(200).json({message: 'The user has been removed from the group.'})
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({error: 'There was an error while trying to delete the user from the group.'})
+  }
+});
 
 module.exports = groupsRoutes; 
