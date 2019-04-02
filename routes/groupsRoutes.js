@@ -56,6 +56,21 @@ groupsRoutes.post('/', async (req, res) => {
       console.log(error);
       res.status(500).json({ error: "There was an error while saving the group to the database"});
   }
-});  
+});
+
+//endpoint route handler to get a list of users by group
+groupsRoutes.get('/:id/users', async (req, res) => {
+  try {
+    if (req.params.id == null) {
+      res.status(400).json({errorMessage: "Please provide a group id."});
+    } else {
+      const usersGroup = await helpers.getUsersByGroupId(req.params.id);
+      res.status(200).json(usersGroup);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({error: 'There was an error while retrieving the users group.'})
+  }
+});
 
 module.exports = groupsRoutes; 
