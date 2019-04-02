@@ -16,6 +16,20 @@ orgsRoutes.get('/', async (req, res) => {
     }
   });
 
+orgsRoutes.get('/:id', async (req, res) => {
+  try {
+    const org = await helpers.getOrgsById(req.params.id);
+    console.log(org);
+    if (org) {
+      res.status(200).json(org);
+    } else {
+      res.status(404).json({message: 'Elisha is working on an amazaing 404 page. In the meantime you get this boring message.'})
+    }
+  } catch (error) {
+    res.status(500).send({message: 'This is embarrassing. Please try to refresh the page and/or Slack us.'});
+  }
+});
+
 //endpoint route handler to create a new organization
 orgsRoutes.post('/', async (req, res) => {
   try {
