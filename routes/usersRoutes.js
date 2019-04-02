@@ -83,5 +83,14 @@ usersRoutes.get('/role/:id', async (req, res) => {
   }
 });  
 
-
+usersRoutes.post('/search', async (req, res) => {
+  console.log('Received search request', req.body.search);
+  try {
+    const user = await helpers.getUsersByName(req.body.search);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({message: 'Bad search term.'});
+  }
+});
+ 
 module.exports = usersRoutes;

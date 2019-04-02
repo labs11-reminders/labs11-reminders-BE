@@ -4,6 +4,9 @@ const prodDbConnection = process.env.DATABASE_URL;
 module.exports = {
   development: {
     client: 'sqlite3',
+    log: {
+       debug(message) {},
+    },
     connection: {
       filename: './database/reminders.db3',
     },
