@@ -24,6 +24,8 @@ exports.up = function(knex, Promise) {
       .references('id')
       .inTable('users');
     tbl.boolean('scheduled').defaultTo(false);
+    tbl.dateTime('scheduled_date');
+    tbl.string('phone_send');
     tbl.boolean('draft').defaultTo(false);
     tbl.boolean('template').defaultTo(false);
   });
