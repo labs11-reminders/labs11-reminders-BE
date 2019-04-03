@@ -1,36 +1,43 @@
-import sqlite3
+#import sqlite3
+#import psycopg2
+#from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+#from psycopg2 import connect
+#import urllib.parse as urlparse
 import pandas as pd
 import pandas.io.sql as psql
 import arrow
 import schedule
 import time
 import os
-import psycopg2
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from psycopg2 import connect
+import json
+import requests
 from datetime import datetime, timedelta
-import urllib.parse as urlparse
+
+api_token = 'your_api_token'
+api_url_base = 'https://reminders-international.herokuapp.com/
+
+headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer {0}'.format(api_token)}
 
 #DB connection - put in both files after one help post said it needed to be in the worker file 
-url = urlparse.urlparse(os.environ['DATABASE_URL'])
-dbname = url.path[1:]
-user = url.username
-password = url.password
-host = url.hostname
-port = url.port
-print("port",port)
+#url = urlparse.urlparse(os.environ['DATABASE_URL'])
+#dbname = url.path[1:]
+#user = url.username
+#password = url.password
+#host = url.hostname
+#port = url.port
+#print("port",port)
 
-db = psycopg2.connect(
-            dbname=dbname,
-            user=user,
-            password=password,
-            host=host,
-            port=port
-            )
+#db = psycopg2.connect(
+ #           dbname=dbname,
+ #           user=user,
+ #           password=password,
+ #           host=host,
+ #          port=port
+ #           )
 
-db.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+#db.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
-cursor = db.cursor()
+#cursor = db.cursor()
 #end of db connection 
 
 class ScheduledReminder:
@@ -51,25 +58,19 @@ class Worker:
         self.scheduled_reminders = []
         self.reminders = []
     
+       
+    def api_getReminders(self):
+        api_url = '{0}api/reminders'.format(api_url_base)
+        response = requests.get(api_url, headers=headers)
 
-    def row_factory(self):
-        # creates array of tuples - each one representing a single reminder entry
-        # used pandas for local version, and heroku didn't like it in deployment. 
-        # I believe this code does the same thing as the pd solution but was going to test in deployed form 
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM reminders WHERE scheduled")
-        rows = cursor.fetchall()
-        for row in rows:
-           print(row[:])
-        
-        # ----- pd/pandas version -------
-        #self.db.row_factory = lambda cursor, row: row[:]
-        #c = self.db.cursor()
-        #self.scheduled_reminders = c.execute('SELECT * from reminders WHERE scheduled ').fetchall()
-        #return self.scheduled_reminders
+        if response.status_code == 200:
+            return json.loads(response.content.decode('utf-8'))
+        else:
+            print("oops")
+            return None
 
-    
-    def create_messages(self):
+
+   def create_messages(self):
     # generates an instance of scheduledReminder for each reminder in
     # schedule reminder array and appends to 'reminders'
         
@@ -142,5 +143,19 @@ class Worker:
                 body=item.message,
                 )
             
-
+    #def row_factory(self):
+        # creates array of tuples - each one representing a single reminder entry
+        # used pandas for local version, and heroku didn't like it in deployment. 
+        # I believe this code does the same thing as the pd solution but was going to test in deployed form 
+        #cursor = db.cursor()
+       # cursor.execute("SELECT * FROM reminders WHERE scheduled")
+        #rows = cursor.fetchall()
+        #for row in rows:
+           #print(row[:])
+        
+        # ----- pd/pandas version -------
+        #self.db.row_factory = lambda cursor, row: row[:]
+        #c = self.db.cursor()
+        #self.scheduled_reminders = c.execute('SELECT * from reminders WHERE scheduled ').fetchall()
+        #return self.scheduled_reminders
    
