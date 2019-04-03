@@ -5,8 +5,23 @@ verify_ssl = true
 
 [dev-packages]
 apscheduler = "*"
+Django = "*"
+dramatiq = "*"
+arrow = "*"
+twilio = "*"
+schedule = "*"
+pandas = "*"
+psycopg2-binary ="*"
 
 [packages]
+apscheduler = "*"
+Django = "*"
+dramatiq = "*"
+arrow = "*"
+twilio = "*"
+schedule = "*"
+pandas = "*"
+psycopg2-binary ="*"
 
 [requires]
 python_version = "3.7"
