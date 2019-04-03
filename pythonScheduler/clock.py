@@ -19,7 +19,7 @@ accountSid = os.environ.get('TWILIO_ACCOUNT_SID')
 authToken = os.environ.get('TWILIO_AUTH_TOKEN')
 
 #class instances 
-worker = Worker(db)
+worker = Worker()
 sched = BlockingScheduler()
 
 #params defined for worker functions
