@@ -14,10 +14,11 @@ import requests
 from datetime import datetime, timedelta
 from worker import Worker
 
+
 worker = Worker()
 
 
 worker.api_getReminders()
 worker.create_messages()
 worker.requires_send()
-worker.send_message(client)
+worker.api_sendReminders()

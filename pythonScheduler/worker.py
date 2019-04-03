@@ -12,33 +12,15 @@ import os
 import json
 import requests
 from datetime import datetime, timedelta
+from twilio.rest import Client
+
+
 
 #api_token = 'your_api_token'
 api_url_base = 'https://reminders-international.herokuapp.com/'
 
 headers = {'Content-Type': 'application/json'}
 
-#DB connection - put in both files after one help post said it needed to be in the worker file 
-#url = urlparse.urlparse(os.environ['DATABASE_URL'])
-#dbname = url.path[1:]
-#user = url.username
-#password = url.password
-#host = url.hostname
-#port = url.port
-#print("port",port)
-
-#db = psycopg2.connect(
- #           dbname=dbname,
- #           user=user,
- #           password=password,
- #           host=host,
- #          port=port
- #           )
-
-#db.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-
-#cursor = db.cursor()
-#end of db connection 
 
 class ScheduledReminder:
     def __init__ (self,title,message,date,phone):
@@ -124,37 +106,12 @@ class Worker:
 
         return(start)
 
-
-    def send_message(self, client):
-        #sends any message flagged with notification true 
-        #more logic to be added for batching
-
-        phone: os.environ.get('TWILIO_PHONE_NUMBER')
+    def api_sendReminders(self):
 
         for item in self.reminders:
             if item.notification == True:
-                print(item)
+                api_url = '{0}api/messages'.format(api_url_base)
+                message = {'to':item.phone ,'body':item.message }
+                response = requests.post(api_url, headers=headers, json=message)
 
-           # if item.notification == True:
-               # client.messages.create(
-              #  to= item.phone,
-               # from_=phone,
-              #  body=item.message,
-               # )
-            
-    #def row_factory(self):
-        # creates array of tuples - each one representing a single reminder entry
-        # used pandas for local version, and heroku didn't like it in deployment. 
-        # I believe this code does the same thing as the pd solution but was going to test in deployed form 
-        #cursor = db.cursor()
-       # cursor.execute("SELECT * FROM reminders WHERE scheduled")
-        #rows = cursor.fetchall()
-        #for row in rows:
-           #print(row[:])
-        
-        # ----- pd/pandas version -------
-        #self.db.row_factory = lambda cursor, row: row[:]
-        #c = self.db.cursor()
-        #self.scheduled_reminders = c.execute('SELECT * from reminders WHERE scheduled ').fetchall()
-        #return self.scheduled_reminders
-   
+    
