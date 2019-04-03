@@ -22,6 +22,7 @@ twilio = "*"
 schedule = "*"
 pandas = "*"
 psycopg2-binary ="*"
+requests = "*"
 
 [requires]
 python_version = "3.7"
