@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const axios = require('axios');
 
 // config routes
 const configureRoutes = require('../routes/elishaRoutes');
@@ -16,11 +17,10 @@ const secured = require('../middleware/secured.js');
 // twilio
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
-const client = require('twilio')(
-  // Perhaps NEW?
-  process.env.TWILIO_ACCOUT_SID,
-  process.env.TWILIO_AUTH_TOKEN,
-); // end twilio
+
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken); // end twilio
 
 const usersRoutes = require('../routes/usersRoutes.js');
 const rolesRoutes = require('../routes/rolesRoutes.js');
@@ -75,41 +75,76 @@ server.get('/api/greeting', (req, res) => {
 server.post('/api/messages', (req, res) => {
   res.header('Content-Type', 'application/json');
   // console.log("RES", res.header, res.body);
-  // console.log("REQ", req);
+  //console.log("REQ", req);
   // res.header('Content-Type', 'application/json');
   client.messages
     .create({
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: req.body.to,
       body: req.body.body,
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: req.body.to
     })
     .then(() => {
       res.send(JSON.stringify({ success: true }));
     })
     .catch(err => {
       console.log(err);
-      res.send(JSON.stringify({ success: false }));
+      res.send(JSON.stringify({err}));
     });
 });
 
-// PUT Phone # for twilio to validate
-server.put('/api/twiliovalidation', (req, res) => {
-  res.header('Content-Type', 'application/json');
+
+// axios.interceptors.request.use(request => {
+//   console.log('Starting Request', request)
+//   return request
+// })
+
+// // PUT Phone # for twilio to validate
+// server.put('/api/twiliovalidation', (req, res) => {
+//   res.header('Content-Type', 'application/json');
+//   const twilio_sid = process.env.TWILIO_VERIFYSERVICE_SID;
+ 
+//   const validationRequest = {
+//     to: req.body.phone,
+//     channel: 'sms'
+//   }
+//   console.log('******** EXECUTING POST ******');
+//     axios.post("https://verify.twilio.com/v2/Services/VA87db353f03bee82d2a4c456eaca6c26e/Verifications",
+//         { To:'+12694913480',Channel:'sms' },
+//         { 
+//           auth: {
+//             username: accountSid,
+//             password: authToken
+//           }
+//         }
+//     )
+//     .then(axiosResponse => {
+//         console.log('POST RESPONSE', axiosResponse.body);
+//         res.send(axiosResponse.body);
+//     })
+//     .catch(err => {
+//         console.log(err.response.data);
+//     });
   
-  client.validationRequests
-    .create({
-      friendlyName: req.body.name,
-      phoneNumber: req.body.phone,
-    })
-    .then(validation_request  => {
-      console.log(validation_request.friendlyName);
-      res.send(JSON.stringify({ validation_request }));
-    })
-    .catch(err => {
-      console.log(err);
-      res.send(JSON.stringify({ validation: false }));
-    });
-}); // End Twilio
+  
+
+  
+  
+  // client.verify
+  //   .services(twilio_sid)
+  //   .verifications
+  //   .create({
+  //     to: req.body.phone,
+  //     channel: 'sms' // we only care about sending SMS
+  //   })
+  //   .then(verification  => {
+  //     console.log(verification.sid);
+  //     res.send(JSON.stringify({ verification }));
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //     res.send(JSON.stringify(err));
+  //   });
+//}); // End Twilio
 
 
 module.exports = server;

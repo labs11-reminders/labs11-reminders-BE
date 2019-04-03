@@ -89,7 +89,8 @@ groupsRoutes.post('/add/user', async (req, res) => {
 });
 
 //endpoint route handler to delete a user from a group
-groupsRoutes.delete('/remove/user', async (req, res) => {
+groupsRoutes.post('/remove/user', async (req, res) => {
+  console.log('Remove user from group request received',req.body);
   try {
     if (req.body.user_id == null || req.body.group_id == null) {
       res.status(400).json({errorMessage: 'Please provide both a user_id and a group_id'})
