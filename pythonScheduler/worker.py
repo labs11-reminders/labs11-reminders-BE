@@ -13,10 +13,10 @@ import json
 import requests
 from datetime import datetime, timedelta
 
-api_token = 'your_api_token'
-api_url_base = 'https://reminders-international.herokuapp.com/
+#api_token = 'your_api_token'
+api_url_base = 'https://reminders-international.herokuapp.com/'
 
-headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer {0}'.format(api_token)}
+headers = {'Content-Type': 'application/json'}
 
 #DB connection - put in both files after one help post said it needed to be in the worker file 
 #url = urlparse.urlparse(os.environ['DATABASE_URL'])
@@ -53,8 +53,7 @@ class ScheduledReminder:
 
 
 class Worker:
-    def __init__ (self, db):
-        self.db = db
+    def __init__ (self):
         self.scheduled_reminders = []
         self.reminders = []
     
@@ -64,22 +63,19 @@ class Worker:
         response = requests.get(api_url, headers=headers)
 
         if response.status_code == 200:
+            self.scheduled_reminders = json.loads(response.content.decode('utf-8'))
             return json.loads(response.content.decode('utf-8'))
         else:
             print("oops")
-            return None
-
-
-   def create_messages(self):
+        
+       
+    def create_messages(self):
     # generates an instance of scheduledReminder for each reminder in
     # schedule reminder array and appends to 'reminders'
         
         for item in self.scheduled_reminders:
-           self.reminders.append(ScheduledReminder (item[1],
-            item[2],
-            item[7],
-            item[8],))
-            
+            self.reminders.append(ScheduledReminder (item['name'],item['description'],item['scheduled_date'],item['phone_send'],))
+    
         return self.reminders
 
     #def update_timezone(self):
@@ -137,11 +133,14 @@ class Worker:
 
         for item in self.reminders:
             if item.notification == True:
-                client.messages.create(
-                to= item.phone,
-                from_=phone,
-                body=item.message,
-                )
+                print(item)
+
+           # if item.notification == True:
+               # client.messages.create(
+              #  to= item.phone,
+               # from_=phone,
+              #  body=item.message,
+               # )
             
     #def row_factory(self):
         # creates array of tuples - each one representing a single reminder entry
