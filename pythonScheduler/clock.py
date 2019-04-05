@@ -8,15 +8,10 @@ from worker import Worker
 from worker import ScheduledReminder
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from psycopg2 import connect
-from twilio.rest import Client
-
 
 #class instances 
 worker = Worker()
 sched = BlockingScheduler()
-
-#params defined for worker functions
-client = Client(accountSid,authToken)
 
 
 @sched.scheduled_job('interval', minutes=5)
