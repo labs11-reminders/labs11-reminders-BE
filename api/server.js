@@ -50,7 +50,8 @@ server.use('/api/groups', groupsRoutes);//yay / post yay
 server.use('/api/groups/:id', groupsRoutes);//yay post na
 server.use('/api/groups/:id/users', groupsRoutes);
 server.use('/api/groups/add/user', groupsRoutes);
-server.use('api/groups/remove/user', groupsRoutes);
+server.use('/api/groups/remove/user', groupsRoutes);
+server.use('/api/users/auth', usersRoutes);
 
 configureRoutes(server);
 

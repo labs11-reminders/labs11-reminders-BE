@@ -23,6 +23,9 @@ exports.up = function(knex, Promise) {
       .notNullable()
       .references('id')
       .inTable('roles');
+    users
+      .string('auth0_sub', 255)
+      .unique();
   });
 };
 
