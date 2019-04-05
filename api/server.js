@@ -58,7 +58,7 @@ server.get('/', (req, res) => {
   res.send('Hello there friend!');
 });
 
-// Twilio GET name only or use generic World
+//Twilio GET name only or use generic World
 server.get('/api/greeting', (req, res) => {
   const name = req.query.name || 'World';
   res.setHeader('Content-Type', 'application/json');
