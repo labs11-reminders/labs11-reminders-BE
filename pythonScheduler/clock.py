@@ -1,13 +1,8 @@
-import sqlite3
-import pandas as pd
-import urllib.parse as urlparse
-import psycopg2
 import os
 from apscheduler.schedulers.blocking import BlockingScheduler
 from worker import Worker
 from worker import ScheduledReminder
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from psycopg2 import connect
+
 
 #class instances 
 worker = Worker()
