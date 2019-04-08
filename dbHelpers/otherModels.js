@@ -16,6 +16,7 @@ module.exports = {
   getReminderById,
   getOrgsById,
   getUsersByGroupId,
+  getGroupByOrg,
 
   createUser,
   createGroup,
@@ -130,6 +131,11 @@ function getReminderById(id) {
 
 function getUsersByGroupId(id) {
   return db.raw('select users.* from users left join userGroups ug on users.id = ug.user_id left join groups on ug.group_id = groups.id where groups.id = ?', id);
+}
+
+function getGroupByOrg(org_id) {
+  return db('groups')
+    .where({ org_id: org_id})
 }
 
 
