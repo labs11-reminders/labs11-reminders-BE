@@ -8,7 +8,7 @@ exports.seed = function(knex, Promise) {
         {
           name: 'Upcoming Class Reminder43',
           description:
-            'NOT SCHEDULED Don\t forget, we have an upcoming class this Wednesday, starting at 8 pm.',
+            'NOT SCHEDULED Don\'t forget, we have an upcoming class this Wednesday, starting at 8 pm.',
           created_at: '03282019',
           group_id: 1,
           user_id: 2,

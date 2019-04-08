@@ -13,7 +13,7 @@ exports.seed = function(knex, Promise) {
         {
           name: 'Reminders International',
           description:
-            'Providing  training and mentorship to enterpreneurs in third world countries.',
+            'Providing training and mentorship to enterpreneurs in third world countries.',
         },
         {
           name: 'Etherium Org',
