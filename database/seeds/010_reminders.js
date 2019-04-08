@@ -31,7 +31,7 @@ exports.seed = function(knex, Promise) {
           phone_send:'13472633943',
           draft: false,
           template: false,
-          approved: false,
+          approved: true,
         },
         {
           name: 'Class material update4',
@@ -45,7 +45,7 @@ exports.seed = function(knex, Promise) {
           phone_send:'13472633943',
           draft: true,
           template: false,
-          approved: false,
+          approved: true,
         },
         {
           name: 'Class material update 24',
@@ -73,7 +73,7 @@ exports.seed = function(knex, Promise) {
           phone_send:'13472633943',
           draft: true,
           template: false,
-          approved: false,
+          approved: true,
         },
         {
           name: 'Class material update 22',

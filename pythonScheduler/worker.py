@@ -48,7 +48,9 @@ class Worker:
     # schedule reminder array and appends to 'reminders'
         
         for item in self.reminders:
-            self.scheduled_reminders.append(ScheduledReminder (item['name'],item['description'],item['scheduled_date'],item['phone_send'],))
+            if item['approved']:
+                self.scheduled_reminders.append(ScheduledReminder (item['name'],item['description'],item['scheduled_date'],item['phone_send'],))
+                print(self.scheduled_reminders)
     
         return self.scheduled_reminders
 
@@ -107,6 +109,7 @@ class Worker:
             if item.notification == True:
                 print("SENT A TEXT MESSAGE")
                 print(item.message)
+
                 #api_url = '{0}api/messages'.format(api_url_base)
                 #message = {'to':item.phone ,'body':item.message }
                 #response = requests.post(api_url, headers=headers, json=message)
