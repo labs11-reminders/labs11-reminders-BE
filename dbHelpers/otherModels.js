@@ -42,6 +42,7 @@ module.exports = {
   getById,
 
   findById, //for the org db
+  findByAuth, //for making sure a user has an Auth0 generated sub_id
 };
 
 function getAll() {
@@ -243,3 +244,9 @@ function findById(id) {
   return db('orgs')
   .where('id', Number(id))
 };
+
+//gets only the user in the table with that particular Auth0 generated id
+function findByAuth(auth0_sub) {
+  return db('users')
+  .where({ auth0_sub: auth0_sub });
+}

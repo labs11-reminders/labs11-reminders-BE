@@ -29,7 +29,7 @@ usersRoutes.get('/:id', async (req, res) => {
 //endpoint route handler to create a new user
 usersRoutes.post('/', async (req, res) => {
   try {
-    
+      console.log(req.body);
       if (req.body.name == null || req.body.password == null || req.body.email == null
           || req.body.phone == null || req.body.country == null || req.body.org_id == null
           || req.body.role_id == null) {
@@ -91,6 +91,15 @@ usersRoutes.post('/search', async (req, res) => {
   } catch (error) {
     res.status(500).json({message: 'Bad search term.'});
   }
+});
+
+usersRoutes.post('/auth', async (req, res) => {
+  try {
+    const user = await helpers.findByAuth(req.body.auth0_sub);
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({message: 'That user has not been authenticated'})
+  }  
 });
  
 module.exports = usersRoutes;
