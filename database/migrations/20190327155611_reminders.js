@@ -28,6 +28,7 @@ exports.up = function(knex, Promise) {
     tbl.string('phone_send');
     tbl.boolean('draft').defaultTo(false);
     tbl.boolean('template').defaultTo(false);
+    tbl.boolean('approved').defaultTo(false);
   });
 };
 
