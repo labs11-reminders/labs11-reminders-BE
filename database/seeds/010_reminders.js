@@ -9,7 +9,6 @@ exports.seed = function(knex, Promise) {
           name: 'Upcoming Class Reminder43',
           description:
             'NOT SCHEDULED Don\t forget, we have an upcoming class this Wednesday, starting at 8 pm.',
-          created_at: '03-28-2019',
           group_id: 1,
           user_id: 2,
           scheduled: false,
@@ -23,7 +22,7 @@ exports.seed = function(knex, Promise) {
           name: 'Class Cancellation4',
           description:
             'Scheduled6: This Thursdays class is cancelled. We will meet again next week.',
-          created_at: '2019-03-28 10:23:54+02',
+          
           group_id: 2,
           user_id: 1,
           scheduled: true,
@@ -37,7 +36,7 @@ exports.seed = function(knex, Promise) {
           name: 'Class material update4',
           description:
             'Scheduled5: Please check with your mentor/instructor for more details, at your class.',
-          created_at: '2019-03-28 10:23:54+02',
+          
           group_id: 3,
           user_id: 1,
           scheduled: true,
@@ -51,7 +50,7 @@ exports.seed = function(knex, Promise) {
           name: 'Class material update 24',
           description:
             'Scheduled4: Please check with your mentor/instructor for more details, at your class.',
-          created_at: '2019-03-28 10:23:54+02',
+          
           group_id: 3,
           user_id: 1,
           scheduled: true,
@@ -65,7 +64,7 @@ exports.seed = function(knex, Promise) {
           name: 'Class material update 23',
           description:
             'Scheduled3: Please check with your mentor/instructor for more details, at your class.',
-          created_at: '2019-03-28 10:23:54+02',
+          
           group_id: 3,
           user_id: 1,
           scheduled: true,
@@ -79,7 +78,7 @@ exports.seed = function(knex, Promise) {
           name: 'Class material update 22',
           description:
             'Scheduled2: Please check with your mentor/instructor for more details, at your class.',
-          created_at: '2019-03-28 10:23:54+02',
+          
           group_id: 3,
           user_id: 1,
           scheduled: true,
@@ -93,7 +92,7 @@ exports.seed = function(knex, Promise) {
           name: 'Class material update 21',
           description:
             'Scheduled1: Please check with your mentor/instructor for more details, at your class.',
-          created_at: '2019-03-28 10:23:54+02',
+          
           group_id: 3,
           user_id: 1,
           scheduled: true,
