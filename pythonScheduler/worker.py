@@ -24,7 +24,7 @@ payload = "{\"grant_type\":\"authorization_code\",\"client_id\": \"os.environ['A
 
 headers = { 'content-type': "application/json" }
 
-conn.request("POST", "/YOUR_DOMAIN/oauth/token", payload, headers)
+conn.request("POST", "https://reminders-international.herokuapp.com/oauth/token", payload, headers)
 
 res = conn.getresponse()
 data = res.read()
