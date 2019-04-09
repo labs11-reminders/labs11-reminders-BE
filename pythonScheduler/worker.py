@@ -1,10 +1,3 @@
-#import sqlite3
-#import psycopg2
-#from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-#from psycopg2 import connect
-#import urllib.parse as urlparse
-import pandas as pd
-import pandas.io.sql as psql
 import arrow
 import schedule
 import time
@@ -12,7 +5,7 @@ import os
 import json
 import requests
 from datetime import datetime, timedelta
-from twilio.rest import Client
+
 
 
 
@@ -23,6 +16,7 @@ headers = {'Content-Type': 'application/json'}
 
 
 class ScheduledReminder:
+    #class for instances of a ScheduledReminder
     def __init__ (self,title,message,date,phone):
         self.title = title
         self.message = message
@@ -38,33 +32,33 @@ class Worker:
     def __init__ (self):
         self.scheduled_reminders = []
         self.reminders = []
-    
-       
+     
     def api_getReminders(self):
         api_url = '{0}api/reminders'.format(api_url_base)
         response = requests.get(api_url, headers=headers)
 
         if response.status_code == 200:
-            self.scheduled_reminders = json.loads(response.content.decode('utf-8'))
+            self.reminders = json.loads(response.content.decode('utf-8'))
             return json.loads(response.content.decode('utf-8'))
         else:
-            print("oops")
-        
+            print("oops")    
        
     def create_messages(self):
     # generates an instance of scheduledReminder for each reminder in
     # schedule reminder array and appends to 'reminders'
         
-        for item in self.scheduled_reminders:
-            self.reminders.append(ScheduledReminder (item['name'],item['description'],item['scheduled_date'],item['phone_send'],))
+        for item in self.reminders:
+            self.scheduled_reminders.append(ScheduledReminder (item['name'],item['description'],item['scheduled_date'],item['phone_send'],))
     
-        return self.reminders
+        return self.scheduled_reminders
 
-    #def update_timezone(self):
-       # for item in self.reminders:
-           # print(item.date)
-            #arrow.Arrow.fromdatetime(item.date,'UTC')
-           # return (print(item.date))
+   
+    ''' #------PLAN TO IMPLEMENT ON FRONT END--------
+    def update_timezone(self): 
+        for item in self.reminders:
+            print(item.date)
+            arrow.Arrow.fromdatetime(item.date,'UTC')
+            return (print(item.date)) '''
     
     def requires_send(self):
         
@@ -96,7 +90,8 @@ class Worker:
         start = datetime(c_year, c_month, c_day, c_hour, c_minute)
         end = datetime(d_year, d_month, d_day, d_hour, d_minute)
 
-        for item in self.reminders:
+        #Flags notification as true or false 
+        for item in self.scheduled_reminders:
             if item.date >= str(start) and item.date <= str(end):
                 item.notification = True
             if item.notification == True:
@@ -106,12 +101,14 @@ class Worker:
 
         return(start)
 
-    def api_sendReminders(self):
-
-        for item in self.reminders:
+    def api_sendReminders(self): 
+        #sends message using Twilio API (in server.js)
+        for item in self.scheduled_reminders:
             if item.notification == True:
-                api_url = '{0}api/messages'.format(api_url_base)
-                message = {'to':item.phone ,'body':item.message }
-                response = requests.post(api_url, headers=headers, json=message)
+                print("SENT A TEXT MESSAGE")
+                print(item.message)
+                #api_url = '{0}api/messages'.format(api_url_base)
+                #message = {'to':item.phone ,'body':item.message }
+                #response = requests.post(api_url, headers=headers, json=message)
 
     
