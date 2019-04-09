@@ -29,6 +29,7 @@ exports.up = function(knex, Promise) {
     tbl.boolean('draft').defaultTo(false);
     tbl.boolean('template').defaultTo(false);
     tbl.boolean('approved').defaultTo(false);
+    tbl.boolean('sent').defaultTo(false);
   });
 };
 

@@ -18,6 +18,7 @@ exports.seed = function(knex, Promise) {
           draft: false,
           template: true,
           approved: false,
+          sent: false,
         },
         {
           name: 'Class Cancellation4',
@@ -32,6 +33,7 @@ exports.seed = function(knex, Promise) {
           draft: false,
           template: false,
           approved: true,
+          sent: false,
         },
         {
           name: 'Class material update4',
@@ -46,6 +48,7 @@ exports.seed = function(knex, Promise) {
           draft: true,
           template: false,
           approved: true,
+          sent: false,
         },
         {
           name: 'Class material update 24',
@@ -60,6 +63,7 @@ exports.seed = function(knex, Promise) {
           draft: true,
           template: false,
           approved: false,
+          sent: false,
         },
         {
           name: 'Class material update 23',
@@ -74,6 +78,7 @@ exports.seed = function(knex, Promise) {
           draft: true,
           template: false,
           approved: true,
+          sent: false,
         },
         {
           name: 'Class material update 22',
@@ -88,6 +93,7 @@ exports.seed = function(knex, Promise) {
           draft: true,
           template: false,
           approved: false,
+          sent: false,
         },
         {
           name: 'Class material update 21',
@@ -102,6 +108,7 @@ exports.seed = function(knex, Promise) {
           draft: true,
           template: false,
           approved: false,
+          sent: false,
         },
       ]);
     });

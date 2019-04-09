@@ -5,15 +5,37 @@ import os
 import json
 import requests
 from datetime import datetime, timedelta
+import http.client
+
+conn = http.client.HTTPSConnection("")
+payload = "{\"grant_type\":\"client_credentials\",\"client_id\": \"os.environ['AUTH0_MACHINE_ID']\",\"client_secret\": \"os.environ['AUTH0_MACHINE_SECRET']\",\"audience\": \"https://localhost:3000/users}"
+
+headers = { 'content-type': "application/json" }
+
+conn.request("POST", "/YOUR_DOMAIN/oauth/token", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
 
 
+payload = "{\"grant_type\":\"authorization_code\",\"client_id\": \"os.environ['AUTH0_MACHINE_ID']\",\"client_secret\": \"os.environ['AUTH0_MACHINE_SECRET']\",\"code\": \"YOUR_AUTHORIZATION_CODE\",\"redirect_uri\": \"https://reminders-international.herokuapp.com/callback\"}"
 
+headers = { 'content-type': "application/json" }
+
+conn.request("POST", "/YOUR_DOMAIN/oauth/token", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
 
 #api_token = 'your_api_token'
-api_url_base = 'https://reminders-international.herokuapp.com/'
+#api_url_base = 'https://reminders-international.herokuapp.com/'
 #headers = {'Content-Type': 'application/json',
            #'Authorization': 'Bearer {0}'.format(api_token)}
-headers = {'Content-Type': 'application/json'}
+#headers = {'Content-Type': 'application/json'}
 
 
 class ScheduledReminder:
@@ -35,6 +57,9 @@ class Worker:
         self.to_send_reminders = []
         self.scheduled_reminders = []
         self.reminders = []
+    
+    def api_getReminders_auth(self):
+        print('CONNECTIONS', auth0.connections.all())
      
     def api_getReminders(self):
         api_url = '{0}api/reminders'.format(api_url_base)
@@ -111,6 +136,7 @@ class Worker:
 
     def api_sendReminders(self): 
         #sends message using Twilio API (in server.js)
+        print(auth0.connections.all())
         for item in self.to_send_reminders:
                 for number in item.phone:
                     print("SENT A TEXT MESSAGE")
@@ -121,5 +147,6 @@ class Worker:
             #if item.sent == True: #mark sent as true in db so it doesn't get sent again. 
                 #api_url = f"{api_url_base}api/reminders/{reminder_id}"
                 #response = requests.put(api_url, headers=headers, json=message)
+                #auth0.connections.update('{reminder_id}', {'sent': 'True'})
 
     
