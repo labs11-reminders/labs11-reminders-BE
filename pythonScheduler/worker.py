@@ -5,14 +5,37 @@ import os
 import json
 import requests
 from datetime import datetime, timedelta
+import http.client
+
+conn = http.client.HTTPSConnection("")
+payload = "{\"grant_type\":\"client_credentials\",\"client_id\": \"os.environ['AUTH0_MACHINE_ID']\",\"client_secret\": \"os.environ['AUTH0_MACHINE_SECRET']\",\"audience\": \"https://localhost:3000/users}"
+
+headers = { 'content-type': "application/json" }
+
+conn.request("POST", "/YOUR_DOMAIN/oauth/token", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
 
 
+payload = "{\"grant_type\":\"authorization_code\",\"client_id\": \"os.environ['AUTH0_MACHINE_ID']\",\"client_secret\": \"os.environ['AUTH0_MACHINE_SECRET']\",\"code\": \"YOUR_AUTHORIZATION_CODE\",\"redirect_uri\": \"https://reminders-international.herokuapp.com/callback\"}"
 
+headers = { 'content-type': "application/json" }
+
+conn.request("POST", "https://reminders-international.herokuapp.com/oauth/token", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
 
 #api_token = 'your_api_token'
-api_url_base = 'https://reminders-international.herokuapp.com/'
-
-headers = {'Content-Type': 'application/json'}
+#api_url_base = 'https://reminders-international.herokuapp.com/'
+#headers = {'Content-Type': 'application/json',
+           #'Authorization': 'Bearer {0}'.format(api_token)}
+#headers = {'Content-Type': 'application/json'}
 
 
 class ScheduledReminder:
@@ -20,9 +43,10 @@ class ScheduledReminder:
     def __init__ (self,title,message,date,phone):
         self.title = title
         self.message = message
-        self.phone = phone
+        self.phone = [phone,]
         self.date = date
         self.notification = False 
+        self.sent = False
 
     def __repr__ (self):
         return f"Title: {self.title}, message: {self.message}, phone:{self.phone}, date:{self.date}"      
@@ -30,8 +54,12 @@ class ScheduledReminder:
 
 class Worker:
     def __init__ (self):
+        self.to_send_reminders = []
         self.scheduled_reminders = []
         self.reminders = []
+    
+    def api_getReminders_auth(self):
+        print('CONNECTIONS', auth0.connections.all())
      
     def api_getReminders(self):
         api_url = '{0}api/reminders'.format(api_url_base)
@@ -46,9 +74,11 @@ class Worker:
     def create_messages(self):
     # generates an instance of scheduledReminder for each reminder in
     # schedule reminder array and appends to 'reminders'
-        
+        print(self.reminders)
         for item in self.reminders:
-            self.scheduled_reminders.append(ScheduledReminder (item['name'],item['description'],item['scheduled_date'],item['phone_send'],))
+            #!!!!!!!! if item.['approved'] == True:(Add item['sent'] below after updating)
+                self.scheduled_reminders.append(ScheduledReminder (item['name'],item['description'],item['scheduled_date'],item['phone_send'],))
+                print(self.scheduled_reminders)
     
         return self.scheduled_reminders
 
@@ -91,24 +121,32 @@ class Worker:
         end = datetime(d_year, d_month, d_day, d_hour, d_minute)
 
         #Flags notification as true or false 
+        #!!!!
         for item in self.scheduled_reminders:
-            if item.date >= str(start) and item.date <= str(end):
-                item.notification = True
-            if item.notification == True:
-                print("true")
-            if item.notification == False:
-                print("false")
+            if item.sent == False: 
+                if item.date >= str(start) and item.date <= str(end):
+                    item.notification = True
+                    self.to_send_reminders.append(item) #reminders that haven't been sent and fall in time range
+                if item.notification == True:
+                    print("true")
+                if item.notification == False:
+                    print("false")
 
-        return(start)
+        return(print(self.to_send_reminders))
 
     def api_sendReminders(self): 
         #sends message using Twilio API (in server.js)
-        for item in self.scheduled_reminders:
-            if item.notification == True:
-                print("SENT A TEXT MESSAGE")
-                print(item.message)
+        print(auth0.connections.all())
+        for item in self.to_send_reminders:
+                for number in item.phone:
+                    print("SENT A TEXT MESSAGE")
+                item.sent = True
                 #api_url = '{0}api/messages'.format(api_url_base)
                 #message = {'to':item.phone ,'body':item.message }
                 #response = requests.post(api_url, headers=headers, json=message)
+            #if item.sent == True: #mark sent as true in db so it doesn't get sent again. 
+                #api_url = f"{api_url_base}api/reminders/{reminder_id}"
+                #response = requests.put(api_url, headers=headers, json=message)
+                #auth0.connections.update('{reminder_id}', {'sent': 'True'})
 
     
