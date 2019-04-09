@@ -71,4 +71,19 @@ orgsRoutes.delete('/:id', async (req, res) => {
 }
 });
 
+//endpoint route handler to get all groups that belong to an org
+orgsRoutes.get('/:id/groups', async (req, res) => {
+  try {
+    const groups = await helpers.getGroupByOrg(req.params.id)
+    console.log(groups);
+    if (groups) {
+      res.status(200).json(groups);
+    } else {
+      res.status(404).json({message: 'There are no groups for the organization.'})
+    }
+  } catch (error) {
+    res.status(500).send(err);
+  }
+});
+
 module.exports = orgsRoutes;  

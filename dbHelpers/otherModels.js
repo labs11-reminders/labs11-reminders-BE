@@ -16,6 +16,7 @@ module.exports = {
   getReminderById,
   getOrgsById,
   getUsersByGroupId,
+  getGroupByOrg,
 
   createUser,
   createGroup,
@@ -130,6 +131,11 @@ function getReminderById(id) {
 
 function getUsersByGroupId(id) {
   return db.raw('select users.* from users left join userGroups ug on users.id = ug.user_id left join groups on ug.group_id = groups.id where groups.id = ?', id);
+}
+
+function getGroupByOrg(org_id) {
+  return db('groups')
+    .where({ org_id: org_id})
 }
 
 
@@ -248,5 +254,6 @@ function findById(id) {
 //gets only the user in the table with that particular Auth0 generated id
 function findByAuth(auth0_sub) {
   return db('users')
-  .where({ auth0_sub: auth0_sub });
+  .where({ auth0_sub: auth0_sub })
+  .first();
 }

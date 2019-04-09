@@ -23,6 +23,7 @@ schedule = "*"
 pandas = "*"
 psycopg2-binary ="*"
 requests = "*"
+auth0-python = "*"
 
 [requires]
 python_version = "3.7"
