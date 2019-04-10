@@ -8,14 +8,14 @@ from datetime import datetime, timedelta
 import http.client
 import ast
 
-#auth_domain = os.environ.get('AUTH0_DOMAIN')
-#client_machine_id = os.environ.get('AUTH0_MACHINE_ID')
-#client_machine_secret = os.environ.get('AUTH0_MACHINE_SECRET')
+auth_domain = os.environ.get('AUTH0_DOMAIN')
+client_machine_id = os.environ.get('AUTH0_MACHINE_ID')
+client_machine_secret = os.environ.get('AUTH0_MACHINE_SECRET')
 
 
-conn = http.client.HTTPSConnection("dev-fkl4pfae.auth0.com")
+conn = http.client.HTTPSConnection(auth_domain)
 
-payload = "{\"client_id\":\"B6raMgdbiwaJzlafmH8HlKrStjDnf75R\",\"client_secret\":\"uvjpbyWal5Vi4050WBaYKAOGyR_xAXdrnUp_YrCpZKtodUP3lJlVE57lwwqJHRPc\",\"audience\":\"https://localhost:3000/users\",\"grant_type\":\"client_credentials\"}"
+payload = "{\"client_id\":\"client_machine_id\",\"client_secret\":\"client_machine_secret\",\"audience\":\"https://localhost:3000/users\",\"grant_type\":\"client_credentials\"}"
 
 headers = { 'content-type': "application/json" }
 
@@ -27,9 +27,6 @@ decoded_data = data.decode("utf-8")
 decoded_data = ast.literal_eval(decoded_data)
 
 
-
-
-        
 class ScheduledReminder:
     #class for instances of a ScheduledReminder
     def __init__ (self,reminder_id,title,message,date,phone,sent):
@@ -42,7 +39,7 @@ class ScheduledReminder:
         self.sent = False
 
     def __repr__ (self):
-        return f"ID: {self.reminder_id}, Title: {self.title}, message: {self.message}, phone:{self.phone}, date:{self.date}"      
+        return f"ID: {self.reminder_id}, Title: {self.title}, message: {self.message}, phone:{self.phone}, date:{self.date}, sent:{self.sent}"      
 
 
 class Worker:
@@ -50,11 +47,7 @@ class Worker:
         self.to_send_reminders = []
         self.scheduled_reminders = []
         self.reminders = []
-            
-    def api_getReminders_auth(self):
-        print("CONNECTING")
-     
-
+    
     def api_getReminders(self):
         
         print("AUTHORIZED API")
@@ -71,21 +64,15 @@ class Worker:
             print("reminders",self.reminders)
             return json.loads(response.content.decode('utf-8'))
         else:
-            print("oops") 
-
-        
+            print("oops")        
        
     def create_messages(self):
     # generates an instance of scheduledReminder for each reminder in
     # schedule reminder array and appends to 'reminders'
-        print(self.reminders)
         for item in self.reminders:
            if item['approved'] == True:
-                self.scheduled_reminders.append(ScheduledReminder (item['id'],item['name'],item['description'],item['scheduled_date'],item['phone_send'],item['sent'],))
-                print(self.scheduled_reminders)
-    
+                self.scheduled_reminders.append(ScheduledReminder (item['id'],item['name'],item['description'],item['scheduled_date'],item['phone_send'],item['sent'],))          
         return self.scheduled_reminders
-
        
     def requires_send(self):
         
@@ -120,8 +107,8 @@ class Worker:
         #Flags notification as true or false 
         #!!!!item.date >= str(start) and
         for item in self.scheduled_reminders:
-            print(item)
             if item.sent == False: 
+                print(item.sent)
                 if  item.date <= str(end):
                     item.notification = True
                     self.to_send_reminders.append(item) #reminders that haven't been sent and fall in time range
@@ -147,11 +134,9 @@ class Worker:
                 #response = requests.post(api_url, headers=headers, json=message)
             if item.sent == True: #mark sent as true in db so it doesn't get sent again. 
                 api_url = f"{api_url_base}api/reminders/{item.reminder_id}"
-                response = requests.put(api_url, headers=headers, data={'key':'value'})
+                payload = {"sent":"true"}
+                response = requests.put(api_url, headers=headers, params=payload)
                 print("PUT",response,response.url)
-                api_url = f"{api_url_base}api/reminders/{item.reminder_id}"
-                response = requests.get(api_url, headers=headers)
-                print("GET",json.loads(response.content.decode('utf-8')), response.url)
-               
+      
 
     

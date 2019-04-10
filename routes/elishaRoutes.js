@@ -189,7 +189,7 @@ function editOrganization(req, res) {
 
 // ******************** Update Reminder ******************//
 function editReminder(req, res) {
-  const changes = req.body;
+  const changes = req.query; // req.body was returning empty, changed to req.query
   const { id } = req.params;
 
   helpers
