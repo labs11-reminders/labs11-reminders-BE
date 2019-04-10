@@ -45,7 +45,8 @@ server.use('/api/roles/:id', rolesRoutes);//yay p&p na
 server.use('/api/orgs', orgsRoutes); //oops 
 server.use('/api/orgs/:id', orgsRoutes);//oops post na
 server.use('/api/reminders', remindersRoutes);//oops
-server.use('/api/reminders/:id', remindersRoutes);//oops / post na 
+server.use('/api/reminders/:id', remindersRoutes);
+server.use('/api/reminders/worker/:id', remindersRoutes);//oops / post na 
 server.use('/api/groups', groupsRoutes);//yay / post yay
 server.use('/api/groups/:id', groupsRoutes);//yay post na
 server.use('/api/groups/:id/users', groupsRoutes);

@@ -2,6 +2,7 @@ import arrow
 import schedule
 import time
 import os
+import sys
 import json
 import requests
 from datetime import datetime, timedelta
@@ -15,16 +16,17 @@ client_machine_secret = os.environ.get('AUTH0_MACHINE_SECRET')
 
 conn = http.client.HTTPSConnection(auth_domain)
 
-payload = "{\"client_id\":\"client_machine_id\",\"client_secret\":\"client_machine_secret\",\"audience\":\"https://localhost:3000/users\",\"grant_type\":\"client_credentials\"}"
+#payload = "{\"client_id\":\"client_machine_id\",\"client_secret\":\"client_machine_secret\",\"audience\":\"https://localhost:3000/users\",\"grant_type\":\"client_credentials\"}"
+ 
 
-headers = { 'content-type': "application/json" }
+#headers = { 'content-type': "application/json" }
 
-conn.request("POST", "/oauth/token", payload, headers)
+#conn.request("POST", "/oauth/token", payload, headers)
 
-res = conn.getresponse()
-data = res.read()
-decoded_data = data.decode("utf-8")
-decoded_data = ast.literal_eval(decoded_data)
+#res = conn.getresponse()
+#data = res.read()
+#decoded_data = data.decode("utf-8")
+#decoded_data = ast.literal_eval(decoded_data)
 
 
 class ScheduledReminder:
@@ -52,7 +54,7 @@ class Worker:
         
         print("AUTHORIZED API")
         
-        api_token = decoded_data['access_token']
+        '''api_token = decoded_data['access_token']
         api_url_base = 'https://reminders-international.herokuapp.com/'
         headers = {'Content-Type': 'application/json','Authorization': 'Bearer {0}'.format(api_token)}
 
@@ -64,7 +66,7 @@ class Worker:
             print("reminders",self.reminders)
             return json.loads(response.content.decode('utf-8'))
         else:
-            print("oops")        
+            print("oops")'''        
        
     def create_messages(self):
     # generates an instance of scheduledReminder for each reminder in
@@ -121,9 +123,9 @@ class Worker:
 
     def api_sendReminders(self): 
         #sends message using Twilio API (in server.js)
-        api_token = decoded_data['access_token']
+        '''api_token = decoded_data['access_token']
         api_url_base = 'https://reminders-international.herokuapp.com/'
-        headers = {'Content-Type': 'application/json','Authorization': 'Bearer {0}'.format(api_token)}
+        headers = {'Content-Type': 'application/json','Authorization': 'Bearer {0}'.format(api_token)}'''
 
         for item in self.to_send_reminders:
             for number in item.phone:
@@ -132,11 +134,11 @@ class Worker:
                 #api_url = '{0}api/messages'.format(api_url_base)
                 #message = {'to':item.phone ,'body':item.message }
                 #response = requests.post(api_url, headers=headers, json=message)
-            if item.sent == True: #mark sent as true in db so it doesn't get sent again. 
+            '''if item.sent == True: #mark sent as true in db so it doesn't get sent again. 
                 api_url = f"{api_url_base}api/reminders/worker/{item.reminder_id}"
                 payload = {"sent":"true"}
                 response = requests.put(api_url, headers=headers, params=payload)
-                print("PUT",response,response.url)
+                print("PUT",response,response.url)'''
       
 
     

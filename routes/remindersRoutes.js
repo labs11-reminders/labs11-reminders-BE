@@ -20,7 +20,7 @@ remindersRoutes.get('/:id', async (req, res) => {
       res.status(500).send({message: 'This is embarrassing. Please try to refresh the page and/or Slack us.'});
     }
 });
-   
+
 //endpoint route handler to delete a reminder
 remindersRoutes.delete('/:id', async (req, res) => {
   try {
