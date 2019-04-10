@@ -15,15 +15,12 @@ psycopg2-binary ="*"
 
 [packages]
 apscheduler = "*"
-Django = "*"
-dramatiq = "*"
 arrow = "*"
 twilio = "*"
 schedule = "*"
 pandas = "*"
-psycopg2-binary ="*"
 requests = "*"
 auth0-python = "*"
-
+rauth = "*"
 [requires]
 python_version = "3.7"
