@@ -86,3 +86,5 @@ typings/
 
 # VSCode 
 .VSCode
+.vscode
+.vscode/settings.json
