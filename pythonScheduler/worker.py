@@ -133,7 +133,7 @@ class Worker:
                 #message = {'to':item.phone ,'body':item.message }
                 #response = requests.post(api_url, headers=headers, json=message)
             if item.sent == True: #mark sent as true in db so it doesn't get sent again. 
-                api_url = f"{api_url_base}api/reminders/{item.reminder_id}"
+                api_url = f"{api_url_base}api/reminders/worker/{item.reminder_id}"
                 payload = {"sent":"true"}
                 response = requests.put(api_url, headers=headers, params=payload)
                 print("PUT",response,response.url)
