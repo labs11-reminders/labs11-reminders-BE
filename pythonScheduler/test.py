@@ -17,8 +17,7 @@ from worker import Worker
 
 worker = Worker()
 
-
-worker.api_getReminders_auth()
-#worker.create_messages()
-#worker.requires_send()
-#worker.api_sendReminders()
+worker.api_getReminders()
+worker.create_messages()
+worker.requires_send()
+worker.api_sendReminders()
