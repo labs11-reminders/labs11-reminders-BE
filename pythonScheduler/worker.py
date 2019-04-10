@@ -6,41 +6,34 @@ import json
 import requests
 from datetime import datetime, timedelta
 import http.client
+import ast
 
-conn = http.client.HTTPSConnection("")
-payload = "{\"grant_type\":\"client_credentials\",\"client_id\": \"os.environ['AUTH0_MACHINE_ID']\",\"client_secret\": \"os.environ['AUTH0_MACHINE_SECRET']\",\"audience\": \"https://localhost:3000/users}"
-
-headers = { 'content-type': "application/json" }
-
-conn.request("POST", "/YOUR_DOMAIN/oauth/token", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
+#auth_domain = os.environ.get('AUTH0_DOMAIN')
+#client_machine_id = os.environ.get('AUTH0_MACHINE_ID')
+#client_machine_secret = os.environ.get('AUTH0_MACHINE_SECRET')
 
 
-payload = "{\"grant_type\":\"authorization_code\",\"client_id\": \"os.environ['AUTH0_MACHINE_ID']\",\"client_secret\": \"os.environ['AUTH0_MACHINE_SECRET']\",\"code\": \"YOUR_AUTHORIZATION_CODE\",\"redirect_uri\": \"https://reminders-international.herokuapp.com/callback\"}"
+conn = http.client.HTTPSConnection("dev-fkl4pfae.auth0.com")
+
+payload = "{\"client_id\":\"B6raMgdbiwaJzlafmH8HlKrStjDnf75R\",\"client_secret\":\"uvjpbyWal5Vi4050WBaYKAOGyR_xAXdrnUp_YrCpZKtodUP3lJlVE57lwwqJHRPc\",\"audience\":\"https://localhost:3000/users\",\"grant_type\":\"client_credentials\"}"
 
 headers = { 'content-type': "application/json" }
 
-conn.request("POST", "https://reminders-international.herokuapp.com/oauth/token", payload, headers)
+conn.request("POST", "/oauth/token", payload, headers)
 
 res = conn.getresponse()
 data = res.read()
-
-print(data.decode("utf-8"))
-
-#api_token = 'your_api_token'
-#api_url_base = 'https://reminders-international.herokuapp.com/'
-#headers = {'Content-Type': 'application/json',
-           #'Authorization': 'Bearer {0}'.format(api_token)}
-#headers = {'Content-Type': 'application/json'}
+decoded_data = data.decode("utf-8")
+decoded_data = ast.literal_eval(decoded_data)
 
 
+
+
+        
 class ScheduledReminder:
     #class for instances of a ScheduledReminder
-    def __init__ (self,title,message,date,phone):
+    def __init__ (self,reminder_id,title,message,date,phone,sent):
+        self.reminder_id = reminder_id
         self.title = title
         self.message = message
         self.phone = [phone,]
@@ -49,7 +42,7 @@ class ScheduledReminder:
         self.sent = False
 
     def __repr__ (self):
-        return f"Title: {self.title}, message: {self.message}, phone:{self.phone}, date:{self.date}"      
+        return f"ID: {self.reminder_id}, Title: {self.title}, message: {self.message}, phone:{self.phone}, date:{self.date}"      
 
 
 class Worker:
@@ -57,39 +50,43 @@ class Worker:
         self.to_send_reminders = []
         self.scheduled_reminders = []
         self.reminders = []
-    
+            
     def api_getReminders_auth(self):
-        print('CONNECTIONS', auth0.connections.all())
+        print("CONNECTING")
      
+
     def api_getReminders(self):
+        
+        print("AUTHORIZED API")
+        
+        api_token = decoded_data['access_token']
+        api_url_base = 'https://reminders-international.herokuapp.com/'
+        headers = {'Content-Type': 'application/json','Authorization': 'Bearer {0}'.format(api_token)}
+
         api_url = '{0}api/reminders'.format(api_url_base)
         response = requests.get(api_url, headers=headers)
 
         if response.status_code == 200:
             self.reminders = json.loads(response.content.decode('utf-8'))
+            print("reminders",self.reminders)
             return json.loads(response.content.decode('utf-8'))
         else:
-            print("oops")    
+            print("oops") 
+
+        
        
     def create_messages(self):
     # generates an instance of scheduledReminder for each reminder in
     # schedule reminder array and appends to 'reminders'
         print(self.reminders)
         for item in self.reminders:
-            #!!!!!!!! if item.['approved'] == True:(Add item['sent'] below after updating)
-                self.scheduled_reminders.append(ScheduledReminder (item['name'],item['description'],item['scheduled_date'],item['phone_send'],))
+           if item['approved'] == True:
+                self.scheduled_reminders.append(ScheduledReminder (item['id'],item['name'],item['description'],item['scheduled_date'],item['phone_send'],item['sent'],))
                 print(self.scheduled_reminders)
     
         return self.scheduled_reminders
 
-   
-    ''' #------PLAN TO IMPLEMENT ON FRONT END--------
-    def update_timezone(self): 
-        for item in self.reminders:
-            print(item.date)
-            arrow.Arrow.fromdatetime(item.date,'UTC')
-            return (print(item.date)) '''
-    
+       
     def requires_send(self):
         
         #flags messages that should be sent in the next five minutes 
@@ -97,7 +94,7 @@ class Worker:
 
         #establishing relative range
         currentTime = arrow.utcnow() #current UTC time
-        duration = currentTime.shift(minutes=7)
+        duration = currentTime.shift(weeks=1)
         duration.humanize(currentTime).format('YYYY-MM-DD HH:mm:ss ZZ') # human speak 'in 7 minutes'
         
         #formatting for start 
@@ -121,10 +118,11 @@ class Worker:
         end = datetime(d_year, d_month, d_day, d_hour, d_minute)
 
         #Flags notification as true or false 
-        #!!!!
+        #!!!!item.date >= str(start) and
         for item in self.scheduled_reminders:
+            print(item)
             if item.sent == False: 
-                if item.date >= str(start) and item.date <= str(end):
+                if  item.date <= str(end):
                     item.notification = True
                     self.to_send_reminders.append(item) #reminders that haven't been sent and fall in time range
                 if item.notification == True:
@@ -136,17 +134,24 @@ class Worker:
 
     def api_sendReminders(self): 
         #sends message using Twilio API (in server.js)
-        print(auth0.connections.all())
+        api_token = decoded_data['access_token']
+        api_url_base = 'https://reminders-international.herokuapp.com/'
+        headers = {'Content-Type': 'application/json','Authorization': 'Bearer {0}'.format(api_token)}
+
         for item in self.to_send_reminders:
-                for number in item.phone:
-                    print("SENT A TEXT MESSAGE")
+            for number in item.phone:
+                print("SENT A TEXT MESSAGE")
                 item.sent = True
                 #api_url = '{0}api/messages'.format(api_url_base)
                 #message = {'to':item.phone ,'body':item.message }
                 #response = requests.post(api_url, headers=headers, json=message)
-            #if item.sent == True: #mark sent as true in db so it doesn't get sent again. 
-                #api_url = f"{api_url_base}api/reminders/{reminder_id}"
-                #response = requests.put(api_url, headers=headers, json=message)
-                #auth0.connections.update('{reminder_id}', {'sent': 'True'})
+            if item.sent == True: #mark sent as true in db so it doesn't get sent again. 
+                api_url = f"{api_url_base}api/reminders/{item.reminder_id}"
+                response = requests.put(api_url, headers=headers, data={'key':'value'})
+                print("PUT",response,response.url)
+                api_url = f"{api_url_base}api/reminders/{item.reminder_id}"
+                response = requests.get(api_url, headers=headers)
+                print("GET",json.loads(response.content.decode('utf-8')), response.url)
+               
 
     
