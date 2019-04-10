@@ -38,7 +38,7 @@ function getUserGroups(req, res) {
     .then(user => {
       helpers.getGroupsByUser(req.params.id).then(groups => {
         const userObj = user[0];
-        console.log(userObj);
+        //console.log(userObj);
         userObj.groups = groups;
         res.status(200).json(user);
       });
@@ -87,7 +87,7 @@ function getUserReminders(req, res) {
     .then(user => {
       helpers.getRemindersByUser(req.params.id).then(rem => {
         const userObj = user[0];
-        console.log(userObj);
+        //console.log(userObj);
         userObj.reminders = rem;
         res.status(200).json(user);
       });
@@ -190,8 +190,10 @@ function editOrganization(req, res) {
 
 // ******************** Update Reminder ******************//
 function editReminder(req, res) {
+ 
   const changes = req.body; 
   const { id } = req.params;
+
 
   helpers
     .updateReminder(id, changes)
@@ -215,7 +217,7 @@ function editReminder(req, res) {
 function editWorkerReminder(req, res) {
   const changes = req.query; // req.body was returning empty, changed to req.query
   const { id } = req.params;
-
+  
   helpers
     .updateReminder(id, changes)
     .then(count => {
