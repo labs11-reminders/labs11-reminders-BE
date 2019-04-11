@@ -13,6 +13,7 @@ module.exports = routes => {
   routes.put('/api/groups/:id', editGroup);
   routes.put('/api/orgs/:id', editOrganization);
   routes.put('/api/reminders/:id', editReminder);
+  routes.put('/api/reminders/worker/:id', editWorkerReminder);
 
   // ******************** Get User Details ******************//
   routes.get('/api/users/data/:id', async (req, res) => {
@@ -37,7 +38,7 @@ function getUserGroups(req, res) {
     .then(user => {
       helpers.getGroupsByUser(req.params.id).then(groups => {
         const userObj = user[0];
-        console.log(userObj);
+        //console.log(userObj);
         userObj.groups = groups;
         res.status(200).json(user);
       });
@@ -86,7 +87,7 @@ function getUserReminders(req, res) {
     .then(user => {
       helpers.getRemindersByUser(req.params.id).then(rem => {
         const userObj = user[0];
-        console.log(userObj);
+        //console.log(userObj);
         userObj.reminders = rem;
         res.status(200).json(user);
       });
@@ -189,8 +190,10 @@ function editOrganization(req, res) {
 
 // ******************** Update Reminder ******************//
 function editReminder(req, res) {
-  const changes = req.body;
+ 
+  const changes = req.body; 
   const { id } = req.params;
+
 
   helpers
     .updateReminder(id, changes)
@@ -210,3 +213,27 @@ function editReminder(req, res) {
         .json({ error: `The Reminder information could not be modified.` });
     });
 }
+// ******************** Update Reminder from WORKER.py ******************//
+function editWorkerReminder(req, res) {
+  const changes = req.query; // req.body was returning empty, changed to req.query
+  const { id } = req.params;
+  
+  helpers
+    .updateReminder(id, changes)
+    .then(count => {
+      count
+        ? res.status(200).json({
+            message: 'Reminder update successful.',
+            updated: changes,
+          })
+        : res.status(404).json({
+            error: `The reminder with the specified id: ${id} does not exist.`,
+          });
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: `The Reminder information could not be modified.` });
+    });
+}
+

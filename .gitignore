@@ -89,3 +89,11 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# VSCode 
+.VSCode
+
+.db3
+
+.vscode
+.vscode/settings.json

@@ -1,4 +1,4 @@
-#import sqlite3
+import sqlite3
 #import psycopg2
 #from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 #from psycopg2 import connect
@@ -16,7 +16,6 @@ from worker import Worker
 
 
 worker = Worker()
-
 
 worker.api_getReminders()
 worker.create_messages()
