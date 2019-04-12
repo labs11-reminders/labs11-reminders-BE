@@ -6,6 +6,7 @@ const groupsRoutes  = express.Router();
 
 const secured = require('../middleware/secured.js');
 
+
 groupsRoutes.delete('/:id', (req, res) => {
     return helpers.deleteGroup(req.params.id)
       .then(count => {

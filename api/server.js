@@ -95,37 +95,37 @@ server.post('/api/messages', (req, res) => {
 });
 
 
-// axios.interceptors.request.use(request => {
-//   console.log('Starting Request', request)
-//   return request
-// })
+axios.interceptors.request.use(request => {
+  console.log('Starting Request', request)
+  return request
+})
 
-// // PUT Phone # for twilio to validate
-// server.put('/api/twiliovalidation', (req, res) => {
-//   res.header('Content-Type', 'application/json');
-//   const twilio_sid = process.env.TWILIO_VERIFYSERVICE_SID;
+// PUT Phone # for twilio to validate
+server.put('/api/twiliovalidation', (req, res) => {
+  res.header('Content-Type', 'application/json');
+  const twilio_sid = process.env.TWILIO_VERIFYSERVICE_SID;
  
-//   const validationRequest = {
-//     to: req.body.phone,
-//     channel: 'sms'
-//   }
-//   console.log('******** EXECUTING POST ******');
-//     axios.post("https://verify.twilio.com/v2/Services/VA87db353f03bee82d2a4c456eaca6c26e/Verifications",
-//         { To:'+12694913480',Channel:'sms' },
-//         { 
-//           auth: {
-//             username: accountSid,
-//             password: authToken
-//           }
-//         }
-//     )
-//     .then(axiosResponse => {
-//         console.log('POST RESPONSE', axiosResponse.body);
-//         res.send(axiosResponse.body);
-//     })
-//     .catch(err => {
-//         console.log(err.response.data);
-//     });
+  const validationRequest = {
+    to: req.body.phone,
+    channel: 'sms'
+  }
+  console.log('******** EXECUTING POST ******');
+    axios.post("https://verify.twilio.com/v2/Services/VA87db353f03bee82d2a4c456eaca6c26e/Verifications",
+        { To:'+12694913480',Channel:'sms' },
+        { 
+          auth: {
+            username: accountSid,
+            password: authToken
+          }
+        }
+    )
+    .then(axiosResponse => {
+        console.log('POST RESPONSE', axiosResponse.body);
+        res.send(axiosResponse.body);
+    })
+    .catch(err => {
+        console.log(err.response.data);
+    });
   
   
 
@@ -146,7 +146,7 @@ server.post('/api/messages', (req, res) => {
   //     console.log(err);
   //     res.send(JSON.stringify(err));
   //   });
-//}); // End Twilio
+}); // End Twilio
 
 
 module.exports = server;
