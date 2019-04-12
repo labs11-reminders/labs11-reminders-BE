@@ -4,8 +4,7 @@ exports.up = function(knex, Promise) {
 
     users
       .string('name', 255)
-      .notNullable()
-      .unique();
+      .notNullable();
     users.string('password').notNullable();
     users.string('email', 255).notNullable();
     users.string('phone', 12);
