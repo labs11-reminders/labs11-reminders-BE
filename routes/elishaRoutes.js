@@ -7,7 +7,7 @@ module.exports = routes => {
   routes.get('/api/orgs/users/:id', getOrgUsers);
   routes.get('/api/reminders', getReminders);
   routes.get('/api/users/reminders/:id', getUserReminders);
-  routes.get('/api/groups/reminders/:id', getGroupReminders);
+  routes.post('/api/groups/reminders/:id', getGroupReminders);
 
   routes.put('/api/users/:id', editUser);
   routes.put('/api/groups/:id', editGroup);

@@ -7,7 +7,7 @@ yarn-error.log*
 lerna-debug.log*
 
 # Ignore the database
-*.db3
+database/reminders.db3
 
 # Ignore the .env
 .env
