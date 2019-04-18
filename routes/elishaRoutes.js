@@ -4,7 +4,7 @@ const Users = require('../dbHelpers/usersModels.js');
 module.exports = routes => {
   //****************************** ENDPOINTS *****************************/
   routes.get('/api/users/groups/:id', getUserGroups);
-  routes.get('/api/orgs/users/:id', getOrgUsers);
+  routes.post('/api/orgs/users/:id', getOrgUsers);
   routes.get('/api/reminders', getReminders);
   routes.get('/api/users/reminders/:id', getUserReminders);
   routes.post('/api/groups/reminders/:id', getGroupReminders);
