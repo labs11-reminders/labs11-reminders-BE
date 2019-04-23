@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const axios = require('axios');
+const helpers = require('../dbHelpers/otherModels');
 
 // config routes
 const configureRoutes = require('../routes/elishaRoutes');
@@ -78,14 +79,26 @@ server.get('/api/greeting', (req, res) => {
 // POST SMS immediate only
 server.post('/api/messages', (req, res) => {
   res.header('Content-Type', 'application/json');
-  // console.log("RES", res.header, res.body);
-  //console.log("REQ", req);
-  // res.header('Content-Type', 'application/json');
-  client.messages
+  const body = req.body.body
+  const group_users=req.body.users
+  let numbers = [];
+
+  if (req.body.to) { //sending to an individual?
+    numbers.push(req.body.to) 
+  }
+  
+  if (group_users) { //sending to a group?
+    for (let i=0; i<group_users.length; i+=1) {
+      numbers.push(group_users[i].phone);
+  } 
+  }
+
+  for (let i=0; i<numbers.length; i+=1) { //send to whoever ended up in numbers array
+    client.messages
     .create({
-      body: req.body.body,
+      body: body,
       from: process.env.TWILIO_PHONE_NUMBER,
-      to: req.body.to
+      to: numbers[i]
     })
     .then(() => {
       res.send(JSON.stringify({ success: true }));
@@ -93,7 +106,10 @@ server.post('/api/messages', (req, res) => {
     .catch(err => {
       console.log(err);
       res.send(JSON.stringify({err}));
-    });
+    })
+   }
+
+;
 });
 
 
