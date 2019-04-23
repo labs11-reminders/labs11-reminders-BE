@@ -2,9 +2,7 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable('users', users => {
     users.increments();
 
-    users
-      .string('name', 255)
-      .notNullable();
+    users.string('name', 255).notNullable();
     users.string('password').notNullable();
     users.string('email', 255).notNullable();
     users.string('phone', 12);
@@ -22,9 +20,8 @@ exports.up = function(knex, Promise) {
       .notNullable()
       .references('id')
       .inTable('roles');
-    users
-      .string('auth0_sub', 255)
-      .unique();
+    users.string('auth0_sub', 255)
+      // .unique();
   });
 };
 
