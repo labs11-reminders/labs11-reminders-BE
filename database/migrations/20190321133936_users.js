@@ -21,7 +21,7 @@ exports.up = function(knex, Promise) {
       .references('id')
       .inTable('roles');
     users.string('auth0_sub', 255)
-      // .unique();
+      .unique();
   });
 };
 
