@@ -5,6 +5,7 @@ module.exports = routes => {
   //****************************** ENDPOINTS *****************************/
   routes.get('/api/users/groups/:id', getUserGroups);
   routes.post('/api/orgs/users/:id', getOrgUsers);
+  routes.get('/api/orgs/users/:id', getOrgUsers);
   routes.get('/api/reminders', getReminders);
   routes.get('/api/users/reminders/:id', getUserReminders);
   routes.post('/api/groups/reminders/:id', getGroupReminders);
