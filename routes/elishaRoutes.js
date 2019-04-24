@@ -21,10 +21,10 @@ module.exports = routes => {
     try {
       const userArr = await Users.getById(req.params.id);
       const user = userArr[0];
-      const userGroups = await helpers.getGroupsByUser(req.params.id);
+      const usergroups = await helpers.getGroupsByUser(req.params.id);
       const userReminders = await helpers.getRemindersByUser(req.params.id);
 
-      res.status(200).json({ user, userGroups, userReminders });
+      res.status(200).json({ user, usergroups, userReminders });
     } catch (error) {
       res
         .status(500)
