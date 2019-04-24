@@ -66,7 +66,7 @@ groupsRoutes.get('/:id/users', async (req, res) => {
       res.status(400).json({errorMessage: "Please provide a group id."});
     } else {
       const usersGroup = await helpers.getUsersByGroupId(req.params.id);
-      res.status(200).json(usersGroup);
+      res.status(200).json(usersgroup);
     }
   } catch (error) {
     console.log(error);
