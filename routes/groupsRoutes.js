@@ -7,17 +7,43 @@ const groupsRoutes  = express.Router();
 const secured = require('../middleware/secured.js');
 
 
-groupsRoutes.delete('/:id', (req, res) => {
-    return helpers.deleteGroup(req.params.id)
-      .then(count => {
-        if (count === 0) {
-          res.status(404).json({ message: 'Elisha is working on an amazaing 404 page. In the meantime you get this boring message.'});
-        } else {
-          res.status(200).json({ id: req.params.id });
+// groupsRoutes.delete('/:id', (req, res) => {
+//     return helpers.deleteGroup(req.params.id)
+//       .then(count => {
+//         if (count === 0) {
+//           res.status(404).json({ message: 'Elisha is working on an amazaing 404 page. In the meantime you get this boring message.'});
+//         } else {
+//           res.status(200).json({ id: req.params.id });
+//         }
+//       })
+//       .catch(err => res.status(500).json({ message: 'This is embarrassing. Please try to refresh the page and/or Slack us.' }));
+//   });
+groupsRoutes.delete('/:id', async (req, res) => {
+  try {
+    const group = await helpers.getGroupById(req.params.id)
+    console.log(group);
+    console.log(req.params.id);
+    if (group) {
+        try {
+            const destroy = await helpers.deleteGroup(req.params.id);
+            if (destroy) {
+                res.status(200).json({message: 'The group has been deleted.'});
+            }
+        } catch (error) {
+            console.log(error);
+            console.log(req.params.id);
+            res.status(500).json({error: 'The group could not be deleted.'});
         }
-      })
-      .catch(err => res.status(500).json({ message: 'This is embarrassing. Please try to refresh the page and/or Slack us.' }));
-  });
+    } else {
+        res.status(404).json({message: 'The group with the specified ID does not exist.'});
+    }
+} catch (error) {
+    res.status(500).json({error: 'The group could not be removed.'});
+}
+});
+
+
+
 
 //endpoint route handler that gets a single user by id
 groupsRoutes.get('/:id', async (req, res) => {
