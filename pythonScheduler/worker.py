@@ -31,14 +31,15 @@ conn = http.client.HTTPSConnection(auth_domain)
 
 class ScheduledReminder:
     #class for instances of a ScheduledReminder
-    def __init__ (self,reminder_id,title,message,date,phone,sent):
+    def __init__ (self,reminder_id,title,message,date,users,sent):
         self.reminder_id = reminder_id
         self.title = title
         self.message = message
-        self.phone = [phone,]
+        self.users = users
         self.date = date
         self.notification = False 
         self.sent = False
+
 
     def __repr__ (self):
         return f"ID: {self.reminder_id}, Title: {self.title}, message: {self.message}, phone:{self.phone}, date:{self.date}, sent:{self.sent}"      
@@ -73,7 +74,7 @@ class Worker:
     # schedule reminder array and appends to 'reminders'
         for item in self.reminders:
            if item['approved'] == True:
-                self.scheduled_reminders.append(ScheduledReminder (item['id'],item['name'],item['description'],item['scheduled_date'],item['phone_send'],item['sent'],))          
+                self.scheduled_reminders.append(ScheduledReminder (item['id'],item['name'],item['description'],item['scheduled_date'],item['users'],item['sent'],))          
         return self.scheduled_reminders
        
     def requires_send(self):
@@ -132,7 +133,7 @@ class Worker:
                 print("SENT A TEXT MESSAGE")
                 item.sent = True
                 #api_url = '{0}api/messages'.format(api_url_base)
-                #message = {'to':item.phone ,'body':item.message }
+                #message = {'users':item.users ,'body':item.message }
                 #response = requests.post(api_url, headers=headers, json=message)
             '''if item.sent == True: #mark sent as true in db so it doesn't get sent again. 
                 api_url = f"{api_url_base}api/reminders/worker/{item.reminder_id}"
