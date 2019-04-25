@@ -130,7 +130,7 @@ function getReminderById(id) {
 }
 
 function getUsersByGroupId(id) {
-  return db.raw('select users.* from users left join userGroups ug on users.id = ug.user_id left join groups on ug.group_id = groups.id where groups.id = ?', id);
+  return db.raw('select users.* from users left join usergroups ug on users.id = ug.user_id left join groups on ug.group_id = groups.id where groups.id = ?', id);
 }
 
 function getGroupByOrg(org_id) {
@@ -164,7 +164,7 @@ function createRole(role) {
 // Incoming body: 
 // record = { user_id: value, group_id: value }
 function addUserToGroup(record) {
-  return db('userGroups')
+  return db('usergroups')
   .insert(record);
 }
 
@@ -238,7 +238,7 @@ function deleteUserFromGroup(user, group) {
   console.log('Removing user from group:');
   console.log('user_id:', user);
   console.log('group_id:', group);
-  return db('userGroups')
+  return db('usergroups')
   .where({ user_id: user, group_id: group })
   .del();
 }

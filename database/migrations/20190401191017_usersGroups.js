@@ -1,6 +1,6 @@
 
 exports.up = function(knex, Promise) {
-    return knex.schema.createTable('userGroups', function(tbl) {
+    return knex.schema.createTable('usergroups', function(tbl) {
         tbl
           .integer('user_id')
           .unsigned()
@@ -18,5 +18,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-    return knex.schema.dropTableIfExists('userGroups');
+    return knex.schema.dropTableIfExists('usergroups');
 };

@@ -4,12 +4,12 @@ exports.up = function(knex, Promise) {
 
     tbl
       .string('name', 255)
-      .notNullable()
-      .unique();
+      .notNullable();
+      
     tbl
       .string('description', 555)
-      .notNullable()
-      .unique();
+      .notNullable();
+      
     tbl.timestamp('created_at').defaultTo(knex.fn.now());
     tbl
       .integer('group_id')
