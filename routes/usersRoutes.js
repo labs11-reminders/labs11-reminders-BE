@@ -74,6 +74,7 @@ usersRoutes.delete('/:id', (req, res) => {
     );
 });
 
+// Get users by role
 usersRoutes.get('/role/:id', async (req, res) => {
   try {
     const users = await helpers.getUsersByRole(req.params.id);
