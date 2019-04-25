@@ -55,6 +55,7 @@ server.use('/api/groups/:id/users', groupsRoutes);
 server.use('/api/groups/add/user', groupsRoutes);
 server.use('/api/groups/remove/user', groupsRoutes);
 server.use('/api/users/auth', usersRoutes);
+server.use('/api/users/search', usersRoutes);
 
 
 configureRoutes(server);
