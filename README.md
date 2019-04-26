@@ -121,3 +121,59 @@ Next setup knexfile correctly:
   <br>
 - knexfile.js
   - set directory to database folder
+
+## 
+
+### Twilio Account
+Sign up for a [Twilio account](https://www.twilio.com/)
+Apply for a Twilio phone number (Buy a Number)
+Add your own number to the Verified Caller IDs
+Retrieve your Twilio Account_SID and Auth_Token
+
+#### On the Backend in the .env, add :
+
+TWILIO_ACCOUNT_SID
+TWILIO_AUTH_TOKEN
+TWILIO_PHONE_NUMBER
+
+#### Dependencies and Setting up the Helper
+
+Dependencies include: express, body-parser, and express-pino-logger
+
+``` javascript
+const client = require('twilio')(
+  process.env.TWILIO_ACCOUT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
+
+const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(pino);
+```
+
+#### API Call to Send a Message
+``` javascript
+app.post('/api/messages', (req, res) => {
+  res.header('Content-Type', 'application/json');
+  client.messages
+    .create({
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: req.body.to,
+      body: req.body.body
+    })
+    .then(() => {
+      res.send(JSON.stringify({ success: true }));
+    })
+    .catch(err => {
+      console.log(err);
+      res.send(JSON.stringify({ success: false }));
+    });
+});
+```
+
+#### Front End
+Create a fetch to using a POST method
+
+### Guided Demo
+[How to send an SMS from React with Twilio](https://www.twilio.com/blog/send-an-sms-react-twilio)
